@@ -1,0 +1,2 @@
+(defclass Input-Message (Message)
+  ())

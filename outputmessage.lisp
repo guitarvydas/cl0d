@@ -1,0 +1,2 @@
+(defclass Output-Message (Message)
+  ())
