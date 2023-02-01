@@ -14,7 +14,7 @@
 (defmethod emptyp ((self FIFO))
   (not (null (self elements))))
 
-(defmethod as-list ((self FIFO))
+(defmethod as-ordered-list ((self FIFO))
   (elements self))
 
 (defmethod print-object ((self FIFO) strm)

@@ -1,0 +1,11 @@
+(defclass Runnable ()
+  ((parent :accessor parent :initarg :parent)
+   (name :accessor name :initarg :name)
+   (top :accessor top :initarg :top)))
+
+(defmethod run ((self Runnable))
+  (loop while (busyp self)
+	do (step self))
+  (loop while (handle-if-ready self)
+	do (loop while (busyp self)
+		 do (step self))))

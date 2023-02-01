@@ -14,7 +14,7 @@
   (as-list (outputq self)))
 
 (defmethod outputs ((self Sender-Queue))
-  (outputsFIFODictionary self))
+  (outputs-FIFO-dictionary self))
 
 (defmethod send ((self Sender-Queue) from port data cause)
   (let ((breadcrumbs
@@ -24,46 +24,26 @@
     (let ((m (make-instance 'Output-Message :from from :port port
 			    :data data :trail breadcrumbs)))
       (enqueue-output self m))))
-      
 
+(defmethod outputs-FIFO-dictionary ((self Sender-Queue))
+  ;; return a dictionary of FIFOs, one FIFO per output port
+  ;; key is the port, each key contains a FIFO of data values 
+  (let ((result-dict (make-instance 'DICT)))
+    (mapc #'(lambda (msg)
+	      (let ((key (port msg))
+		    (v   (data msg)))
+	     (prepend-value result-dict key v)))
+	  (as-ordered-list (outputq self)))
+    (reverse-all-values-in-place-destructive result-dict)
+    result-dict))
 
-
-
-
-    def outputsFIFODictionary (self):
-        # return a dictionary of FIFOs, one FIFO per output port
-        resultdict = {}
-        for message in self._outputq.asList ():
-            if (not (message.port in resultdict)):
-                resultdict [message.port] = FIFO ()
-            resultdict [message.port].enqueue (message.data)
-        resultdict2 = {}
-        for key in resultdict:
-            fifo = resultdict [key]
-            r = fifo.asList ()
-            resultdict2 [key] = r
-        return resultdict2
-
-    def outputsLIFODictionary (self):
-        # return a dictionary of LIFOs, one LIFO per output port
-        resultdict = {}
-        for message in self._outputq.asList ():
-            if (not (message.port in resultdict)):
-                resultdict [message.port] = FIFO ()
-            resultdict [message.port].enqueue (message.data)
-        resultdict2 = {}
-        for key in resultdict:
-            fifo = resultdict [key]
-            r = fifo.asList ()
-            r.reverse () ## newest result first
-            resultdict2 [key] = r
-        return resultdict2
-
-    # internal - not exported
-    def send (self, xfrom, portname, data, cause):
-        if cause:
-            breadcrumbs = [cause, cause.trail]
-        else:
-            breadcrumbs = [cause]
-        m = OutputMessage (xfrom, portname, data, trail=breadcrumbs)
-        self.enqueueOutput (m)
+(defmethod outputs-LIFO-dictionary ((self Sender-Queue))
+  ; return a dictionary of LIFOs, one LIFO per output port
+  (let ((result-dict (make-instance 'DICT)))
+    (mapc #'(lambda (msg)
+	      (let ((key (port msg))
+		    (v   (data msg)))
+	     (prepend-value result-dict key v)))
+	  (as-ordered-list (outputq self)))
+    result-dict))
+    
