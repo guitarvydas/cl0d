@@ -1,5 +1,6 @@
 (defclass Connection (Debuggable)
-  ())
+  ((sender :accessor sender :initarg :sender)
+   (receiver :accessor receiver :initarg :receiver)))
 
 (defmethod debug ((self Connection) note msg sender receiver)
   (when (excrutiating-detail self)

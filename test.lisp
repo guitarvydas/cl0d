@@ -1,0 +1,7 @@
+(defun test ()
+  (let ((hw (make-instance 'Hello-World-Sequential :parent nil :name "hwsequential")))
+    (start hw :port "stdin" :data "Sequential hello world")
+    (format *standard-output* "~a~%" (outputs hw)))
+  (let ((hw (make-instance 'Hello-World-Concurrent :parent nil :name "hwconcurrent")))
+    (start hw :port "stdin" :data "Concurrent hello world")
+    (format *standard-output* "~a~%" (outputs hw))))
