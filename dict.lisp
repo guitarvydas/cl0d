@@ -3,14 +3,14 @@
 
 (defmethod prepend-value ((self DICT) key v)
   (multiple-value-bind 
-   (value-list success) (gethash (dict self) key)
+   (value-list success) (gethash key (dict self))
    (if success
-       (setf (gethash (dict self) key) (cons v value-list))
-     (setf (gethash (dict self) key) (cons v nil)))))
+       (setf (gethash key (dict self)) (cons v value-list))
+     (setf (gethash key (dict self)) (cons v nil)))))
 
 (defmethod reverse-all-values-in-place-destructive ((self DICT))
-  (let ((hashtable ((dict self))))
+  (let ((hashtable (dict self)))
     (maphash #'(lambda (k v)
-		 (setf (gethash (dict self) k) (reverse v)))
+		 (setf (gethash k (dict self)) (reverse v)))
 	     hashtable)))
   

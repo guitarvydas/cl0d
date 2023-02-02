@@ -12,10 +12,10 @@
   (length (elements self)))
 
 (defmethod emptyp ((self FIFO))
-  (not (null (self elements))))
+  (not (null (elements self))))
 
 (defmethod as-ordered-list ((self FIFO))
   (elements self))
 
 (defmethod print-object ((self FIFO) strm)
-  (format strm "~a" (self elements)))
+  (format strm "~a" (elements self)))
