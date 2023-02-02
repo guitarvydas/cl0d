@@ -1,20 +1,16 @@
 
 (defclass Container (EH)
-  ())
-  ;; ((default-name :accessor default-name :initform "default")
-  ;;  ...))
+  ((children :accessor children :initarg :children)
+   (connections :accessor connections :initarg :connections)))
 
-(defmethod initialize-instance :after ((self EH))
+(defmethod initialize-instance :after ((self Container) &KEY &ALLOW-OTHER-KEYS)
   (let ((defname "default"))
-    (setf (default-name self) defname)
+    (setf (default-state-name self) defname)
     (let ((handler (make-instance 'Port-Handler :port "*" 
 				  :func #'(lambda (msg) (handle self msg)))))
-      (setf (handler self) handler)
-      (let ((s (make-instance 'State :machine self :name defname :enter nil
-			      :handlers (list handler) :exit nil :child-machine nil)))
-	(setf (enter self) #'noop
-	      (exit self)  #'noop
-	      (states self) (list s))))))
+      (let ((s (make-instance 'State :machine self :name defname :enter-func #'noop
+			      :handlers (list handler) :exit-func #'noop :child-machine nil)))
+	(setf (states self) (list s))))))
   
 
 (defmethod handle ((self Container) msg)
@@ -31,17 +27,18 @@
   (loop while (any-child-ready-p self)
 	do (mapc #'(lambda (child)
 		     (handle-if-ready child)
-		     (route-outputs self))
+		     (route-outputs self child))
 		 (children self))))
 
 (defmethod any-child-ready-p ((self Container))
   (mapc #'(lambda (child)
-	    (when (is-ready-p child)
-	      (return-from any-child-ready-p t))))
+	    (when (ready-p child)
+	      (return-from any-child-ready-p t)))
+        (children self))
   nil)
 
 (defmethod route-outputs ((self Container) child)
-  (let ((outputs (ouput-queue child)))
+  (let ((outputs (output-queue child)))
     (clear-outputs child)
     (mapc #'(lambda (msg)
 	      (mapc #'(lambda (conn)

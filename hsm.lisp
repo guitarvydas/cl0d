@@ -1,11 +1,10 @@
 (defclass HSM ()
   ((name :accessor name :initarg :name)
    (default-state-name :accessor default-state-name :initarg :default-state-name)
-   (enter :accessor enter :initarg :enter)
-   (exit :accessor exit :initarg :exit)
+   (states :accessor states :initarg :states)
    (state :accessor state :initform nil)))
 
-(defmethod initialize-instance :after ((self HSM))
+(defmethod initialize-instance :after ((self HSM) &KEY &ALLOW-OTHER-KEYS)
   (setf (excrutiating-detail self) t)
   (enter self))
 
@@ -21,21 +20,21 @@
   (exit (state self)))
 
 (defmethod next ((self HSM) state-name)
-  (exit-state self)
+  (exit (state self))
   (setf (state self) (lookup-state self state-name (states self))))
 
 (defmethod reset ((self HSM))
   (reset (state self))
   (exit (state self))
-  (enter-default self))
+  (enter (lookup-state self (default-state-name self) (states self))))
 
 (defmethod handle ((self HSM) msg)
   (handle (state self) msg))
 
-(defmethod step ((self HSM))
+(defmethod step-hsm ((self HSM))
   (when (excrutiating-detail self)
-    (format *standard-error* "stepping ~a in state ~a" (name self) (name (state self))))
-  (step (state self)))
+    (format *error-output* "stepping ~a in state ~a" (name self) (name (state self))))
+  (step-hsm (state self)))
 
 (defmethod busy-p ((self HSM))
   (busy-p (state self)))

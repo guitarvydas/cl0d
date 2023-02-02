@@ -1,16 +1,16 @@
 (defclass Down (Connection)
   ())
 
-(defmethod guarded-deliver ((self Down) in-message)
+(defmethod guarded-deliver ((self Down) (msg Input-Message))
   ;; try to deliver the message
   ;; deliver only if message's from and port match this connection's sender's from and port, otherwise do nothing
-  (when (match (sender self) (from in-message) (port in-message))
+  (when (match-p (sender self) (from msg) (port msg))
     (let ((receiver (receiver self))
 	  (sender (sender self)))
-      (debug self "down" in-message sender receiver)
+      (debug self "down" msg sender receiver)
       (let ((mapped-message (make-instance 'Input-Message 
 					   :from sender
 					   :port (port receiver)
-					   :data (data in-message)
-					   :trail in-message)))
+					   :data (data msg)
+					   :trail msg)))
 	(enqueue-input receiver mapped-message)))))

@@ -1,5 +1,5 @@
 (defclass Sender-Queue ()
-  ((outputq :accessor ouputq :initform (make-instance 'FIFO))))
+  ((outputq :accessor outputq :initform (make-instance 'FIFO))))
 
 (defmethod clear-outputs ((self Sender-Queue))
   (setf (outputq self) (make-instance 'FIFO)))
@@ -11,7 +11,7 @@
   (dequeue (outputq self)))
 
 (defmethod output-queue ((self Sender-Queue))
-  (as-list (outputq self)))
+  (as-ordered-list (outputq self)))
 
 (defmethod outputs ((self Sender-Queue))
   (outputs-FIFO-dictionary self))

@@ -1,7 +1,7 @@
 (defclass Hello-World-Concurrent (Container)
   ())
 
-(defmethod initialize-instance :after ((self Hello-World-Concurrent))
+(defmethod initialize-instance :after ((self Hello-World-Concurrent) &KEY &ALLOW-OTHER-KEYS)
   (let ((e1 (make-instance 'Echo :parent self 
 			   :name (format nil "~a/~a" (name self) "e1")))
 	(e2 (make-instance 'Echo :parent self 

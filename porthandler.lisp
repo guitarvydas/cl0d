@@ -1,6 +1,6 @@
 (defclass Port-Handler ()
   ((port :accessor port :initarg :port)
-   (func :accessor funct :initarg :func)))
+   (func :accessor func :initarg :func)))
 
 ;; A Function associated with a Port (a string)
 ;; The port '*' means any port.

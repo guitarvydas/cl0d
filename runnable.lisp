@@ -4,8 +4,8 @@
    (top :accessor top :initarg :top)))
 
 (defmethod run ((self Runnable))
-  (loop while (busyp self)
+  (loop while (busy-p self)
 	do (step self))
   (loop while (handle-if-ready self)
-	do (loop while (busyp self)
+	do (loop while (busy-p self)
 		 do (step self))))

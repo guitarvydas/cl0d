@@ -1,20 +1,20 @@
 (defclass State ()
   ((machine :accessor machine :initarg :machine)
    (name :accessor name :initarg :name)
-   (enter :accessor enter :initarg :enter)
+   (enter-func :accessor enter-func :initarg :enter-func)
    (handlers :accessor handlers :initarg :handlers)
-   (exit :accessor exit :initarg :exit)
+   (exit-func :accessor exit-func :initarg :exit-func)
    (child-machine :accessor child-machine :initarg :child-machine)))
 
 (defmethod enter ((self State))
-  (when (enter self)
-    (funcall (enter self) self))
+  (when (enter-func self)
+    (funcall (enter-func self) self))
   (when (child-machine self)
     (enter (child-machine self))))
 
 (defmethod exit ((self State))
-  (when (exit self)
-    (funcall (exit self) self))
+  (when (exit-func self)
+    (funcall (exit-func self) self))
   (when (child-machine self)
     (exit (child-machine self))))
 
@@ -25,7 +25,7 @@
 	  (t nil))))
 
 (defmethod busy-p ((self State))
-  (cond ((child-machine self) (busy-p ((child-machine self))))
+  (cond ((child-machine self) (busy-p (child-machine self)))
 	(t nil)))
 
 ;; worker bee
@@ -35,5 +35,5 @@
 	       (rest (cdr handlers)))
 	   (cond ((match-port handler (port msg)) (funcall (func handler) msg) t)
 		 (t (handler-chain self msg rest sub-machine)))))
-	(sub-machine (handle (sub-machine msg)))
+	(sub-machine (handle sub-machine msg))
 	(t nil)))

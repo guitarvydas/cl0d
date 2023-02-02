@@ -2,4 +2,4 @@
   ())
 
 (defmethod __handler__ ((self Leaf) message)
-  (send self :from self :port-name "stdout" :data (data message) :cause message))
+  (send self self "stdout" (data message) message))
