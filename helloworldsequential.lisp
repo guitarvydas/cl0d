@@ -1,7 +1,8 @@
 (defclass Hello-World-Sequential (Container)
   ())
 
-(defmethod initialize-instance :around ((self Hello-World-Sequential) &KEY &ALLOW-OTHER-KEYS)
+(defmethod initialize-instance :around ((self Hello-World-Sequential) &KEY (name "<noname>") &ALLOW-OTHER-KEYS)
+  (setf (name self) name)
   (let ((e1 (make-instance 'Echo :parent self 
 			   :name (format nil "~a/~a" (name self) "e1")))
 	(e2 (make-instance 'Echo :parent self 
