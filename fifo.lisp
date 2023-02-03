@@ -1,6 +1,9 @@
 (defclass FIFO ()
   ((elements :accessor elements :initform nil)))
 
+(defmethod initialize-instance :around ((self FIFO) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod enqueue ((self FIFO) v)
   (push v (elements self)))
 

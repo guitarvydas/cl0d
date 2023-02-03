@@ -1,6 +1,9 @@
 (defclass Down (Connection)
   ())
 
+(defmethod initialize-instance :around ((self Down) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod guarded-deliver ((self Down) (msg Input-Message))
   ;; try to deliver the message
   ;; deliver only if message's from and port match this connection's sender's from and port, otherwise do nothing

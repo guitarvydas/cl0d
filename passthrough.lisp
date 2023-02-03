@@ -1,6 +1,9 @@
 (defclass Pass-Through (Connection)
   ())
 
+(defmethod initialize-instance :around ((self Pass-Through) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod guarded-deliver ((self Pass-Through) (msg Input-Message))
   ;; try to deliver the message
   ;; deliver only if message's from and port match this connection's sender's from and port, otherwise do nothing

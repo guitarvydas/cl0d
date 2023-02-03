@@ -1,6 +1,9 @@
 (defclass Sender-Queue ()
   ((outputq :accessor outputq :initform (make-instance 'FIFO))))
 
+(defmethod initialize-instance :around ((self Sender-Queue) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod clear-outputs ((self Sender-Queue))
   (setf (outputq self) (make-instance 'FIFO)))
 

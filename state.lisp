@@ -6,6 +6,9 @@
    (exit-func :accessor exit-func :initarg :exit-func)
    (child-machine :accessor child-machine :initarg :child-machine)))
 
+(defmethod initialize-instance :around ((self State) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod enter ((self State))
   (when (enter-func self)
     (funcall (enter-func self) self))

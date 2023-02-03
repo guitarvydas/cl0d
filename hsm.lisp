@@ -1,22 +1,25 @@
-(defclass HSM ()
+(defclass HSM (Debuggable)
   ((name :accessor name :initarg :name)
    (default-state-name :accessor default-state-name :initarg :default-state-name)
+   (enter-func :accessor enter-func :initarg :enter-func :initform nil)
+   (exit-func :accessor exit-func :initarg :exit-func :initform nil)
    (states :accessor states :initarg :states)
    (state :accessor state :initform nil)))
 
-(defmethod initialize-instance :after ((self HSM) &KEY &ALLOW-OTHER-KEYS)
-  (setf (excrutiating-detail self) t)
+(defmethod initialize-instance :around ((self HSM) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method)
+  (enable-excruciating-detail self)
   (enter self))
 
 (defmethod enter ((self HSM))
-  (when (enter self)
-    (funcall (enter self) self))
+  (when (enter-func self)
+    (funcall (enter-func self) self))
   (setf (state self) (lookup-state self (default-state-name self) (states self)))
   (enter (state self)))
 
 (defmethod exit ((self HSM))
-  (when (exit self)
-    (funcall (exit self) self))
+  (when (exit-func self)
+    (funcall (exit-func self) self))
   (exit (state self)))
 
 (defmethod next ((self HSM) state-name)
@@ -32,7 +35,7 @@
   (handle (state self) msg))
 
 (defmethod step-hsm ((self HSM))
-  (when (excrutiating-detail self)
+  (when (excruciating-detail self)
     (format *error-output* "stepping ~a in state ~a" (name self) (name (state self))))
   (step-hsm (state self)))
 

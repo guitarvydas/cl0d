@@ -1,16 +1,17 @@
 
 (defclass Container (EH)
   ((children :accessor children :initarg :children)
-   (connections :accessor connections :initarg :connections)))
+   (connections :accessor connections :initarg :connections))
+  (:default-initargs
+   :default-state-name "default"))
 
-(defmethod initialize-instance :after ((self Container) &KEY &ALLOW-OTHER-KEYS)
-  (let ((defname "default"))
-    (setf (default-state-name self) defname)
-    (let ((handler (make-instance 'Port-Handler :port "*" 
-				  :func #'(lambda (msg) (handle self msg)))))
-      (let ((s (make-instance 'State :machine self :name defname :enter-func #'noop
-			      :handlers (list handler) :exit-func #'noop :child-machine nil)))
-	(setf (states self) (list s))))))
+(defmethod initialize-instance :around ((self Container) &KEY &ALLOW-OTHER-KEYS)
+  (let ((handler (make-instance 'Port-Handler :port "*" 
+                                :func #'(lambda (msg) (handle self msg)))))
+    (let ((s (make-instance 'State :machine self :name (default-state-name self) :enter-func #'noop
+                            :handlers (list handler) :exit-func #'noop :child-machine nil)))
+      (setf (states self) (list s)))
+    (call-next-method)))
   
 
 (defmethod handle ((self Container) msg)

@@ -1,7 +1,7 @@
 (defclass Hello-World-Concurrent (Container)
   ())
 
-(defmethod initialize-instance :after ((self Hello-World-Concurrent) &KEY &ALLOW-OTHER-KEYS)
+(defmethod initialize-instance :around ((self Hello-World-Concurrent) &KEY &ALLOW-OTHER-KEYS)
   (let ((e1 (make-instance 'Echo :parent self 
 			   :name (format nil "~a/~a" (name self) "e1")))
 	(e2 (make-instance 'Echo :parent self 
@@ -31,6 +31,7 @@
 			  :receiver (make-instance 'Receiver :target self :port "stdout"))
 	   (make-instance 'Up 
 			  :sender (make-instance 'Sender :from e3 :port "stdout")
-			  :receiver (make-instance 'Receiver :target self :port "stdout"))))))
+			  :receiver (make-instance 'Receiver :target self :port "stdout"))))
+    (call-next-method)))
 
 

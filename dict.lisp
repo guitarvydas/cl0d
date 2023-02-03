@@ -1,6 +1,9 @@
 (defclass DICT ()
   ((dict :accessor dict :initform (make-hash-table :test 'equal))))
 
+(defmethod initialize-instance :around ((self Dict) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod prepend-value ((self DICT) key v)
   (multiple-value-bind 
    (value-list success) (gethash key (dict self))

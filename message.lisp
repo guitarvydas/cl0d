@@ -8,6 +8,12 @@
    (trail :accessor trail :initarg :trail)))
 
 
+(defmethod initialize-instance :around ((self Base-Message) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
+(defmethod initialize-instance :around ((self Message) &KEY &ALLOW-OTHER-KEYS)
+  (call-next-method))
+
 (defmethod print-object ((self Base-Message) strm)
   (format strm "~a" (data self)))
 
