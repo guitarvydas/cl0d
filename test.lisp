@@ -1,7 +1,7 @@
 (defun test ()
-  (let ((hw (make-instance 'Hello-World-Sequential :parent nil :name "hwsequential")))
-    (start hw "stdin" "Sequential hello world")
-    (format *standard-output* "~a~%" (outputs hw)))
-  (let ((hw (make-instance 'Hello-World-Concurrent :parent nil :name "hwconcurrent")))
-    (start hw "stdin" "Concurrent hello world")
-    (format *standard-output* "~a~%" (outputs hw))))
+  (let ((m (MAP/new `( (a . ,(lambda () "hello")) (b . ,(lambda () "world"))))))
+    (% m 'a)))
+
+(defun test2 ()
+  (let ((m (MAP/new `( (a . ,(lambda () "hello")) (b . ,(lambda () "world"))))))
+    (% m 'b)))

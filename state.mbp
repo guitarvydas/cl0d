@@ -1,0 +1,35 @@
+def State {
+
+  interface :
+
+    enter
+    exit
+    handle (Message)
+    step
+    ❲is active❳ >> ❲yes/no❳
+
+  attributes :
+    enter
+    handlers
+    ❲inner machine❳
+    exit
+    owner
+    name
+
+  synonyms :
+    Port ≡ id
+    Owner ≡ Machine
+    id ≡ <external>
+    ❲yes/no❳ ≡ <external>
+    Machine ≡ <elsewhere>
+    Message ≡ <elsewhere>
+
+  environment :
+    next (id)  ≡ self.owner.next (id)
+    terminate  ≡ self.owner.terminate >> ❲yes/no❳
+}
+
+
+
+❲❳
+≡

@@ -1,11 +1,10 @@
 
 (defclass Container (EH)
   ((children :accessor children :initarg :children)
-   (connections :accessor connections :initarg :connections))
-  (:default-initargs
-   :default-state-name "default"))
+   (connections :accessor connections :initarg :connections)))
 
 (defmethod initialize-instance :around ((self Container) &KEY &ALLOW-OTHER-KEYS)
+  (setf (default-state-name self) "default")
   (let ((handler (make-instance 'Port-Handler :port "*" 
                                 :func #'(lambda (msg) (handle self msg)))))
     (let ((s (make-instance 'State :machine self :name (default-state-name self) :enter-func #'(lambda (x))

@@ -21,4 +21,4 @@
   (if (excruciating-detail self)
       (format strm "{~a: ~a, ~a, ~a->~a}" 
 	      (direction self) (port self) (data self) (trail self))
-    (format strm "{a}" (port self))))
+    (format strm "{~a}" (port self))))
