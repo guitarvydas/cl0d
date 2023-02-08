@@ -1,0 +1,5 @@
+(defun eh (given-name)
+  (let ((name (format nil "~a/Schedulable" given-name)))
+    (let ((sched (Schedulable/new name)))
+      `((name . ,(lambda () name))
+	(%else . sched)))))
