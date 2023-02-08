@@ -9,13 +9,13 @@
 ;;  the port of an OutputMessage refers to a port of the sender
 ;; The router (in Container) remaps ports as appropriate.
 
-(defun InputMessage/new (port v)
+(defun Input-Message/new (port v)
   (let ((port port)
 	(data v))
     `((port . ,(lambda () port))
       (data . ,(lambda () data)))))
 
-(defun OutputMessage/new (port v)
+(defun Output-Message/new (port v)
   (let ((port port)
 	(data v))
     `((port . ,(lambda () port))

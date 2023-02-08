@@ -14,6 +14,6 @@
                          (dequeue . ,dequeue)
                          (clear . ,clear)
                          (empty? . ,empty?)
-                         (%contents . ,%contents)
+                         (contents . ,contents)
                          )))
 	namespace))))
