@@ -38,3 +38,14 @@
   (let ((echo (Echo/new "test")))
     (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "hello world")))
     (apply (%lookup echo 'outputs) nil)))
+
+(defun test7 ()
+  (let ((echo (Echo/new "test")))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "hello world")))
+    (apply (%lookup echo 'for-each-output)
+           (list (lambda (msg)
+                   (format *standard-output* "{~a: ~a}~%"
+                           (apply (%lookup msg 'port) nil)
+                           (apply (%lookup msg 'data) nil)
+                           ))))
+    (values)))

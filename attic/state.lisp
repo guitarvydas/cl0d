@@ -1,42 +1,50 @@
-(defclass State ()
-  ((machine :accessor machine :initarg :machine)
-   (name :accessor name :initarg :name)
-   (enter-func :accessor enter-func :initarg :enter-func)
-   (handlers :accessor handlers :initarg :handlers)
-   (exit-func :accessor exit-func :initarg :exit-func)
-   (child-machine :accessor child-machine :initarg :child-machine)))
-
-(defmethod initialize-instance :around ((self State) &KEY &ALLOW-OTHER-KEYS)
-  (call-next-method))
+;; State interface
 
 (defmethod enter ((self State))
-  (when (enter-func self)
-    (funcall (enter-func self) self))
-  (when (child-machine self)
-    (enter (child-machine self))))
+)
+enter
+exit
+handle (Message)
+step
+❲is active❳ >> ❲yes/no❳
 
-(defmethod exit ((self State))
-  (when (exit-func self)
-    (funcall (exit-func self) self))
-  (when (child-machine self)
-    (exit (child-machine self))))
+;; State initializer
+(defclass State
+  ((|enter| :accessor |enter| :initarg :enter)
+   (|handlers| :accessor |handlers| :initarg :handlers)
+   (|inner-machine| :accessor |inner-machine| :initarg :inner-machine)
+   (|exit| :accessor |exit| :initarg :exit)
+   (|owner| :accessor |owner| :initarg :owner)
+   (|name| :accessor |name| :initarg :name)))
 
-(defmethod handle ((self State) msg)
-  (let ((r (handler-chain self msg (handlers self) (child-machine self))))
-    (cond (r t)
-	  ((child-machine self) (handle (child-machine self) msg))
-	  (t nil))))
+(defun new[State] (&key enter handlers inner-machine exit owner name)
+  (make-instance 'State 
+		 :enter enter :handlers handlers
+		 :inner-machine inner-machine :exit exit
+		 :owner owner :name name))
 
-(defmethod busy-p ((self State))
-  (cond ((child-machine self) (busy-p (child-machine self)))
-	(t nil)))
+;; Definitions
+(define-symbol-macro Port id)
+(define-symbol-macro Owner |Machine|)
+Owner ≡ Machine
+id ≡ <external>
+❲yes/no❳ ≡ <external>
+Machine ≡ <elsewhere>
+Message ≡ <elsewhere>
 
-;; worker bee
-(defun handler-chain (self msg handlers sub-machine)
-  (cond (handlers
-	 (let ((handler (car handlers))
-	       (rest (cdr handlers)))
-	   (cond ((match-port handler (port msg)) (funcall (func handler) msg) t)
-		 (t (handler-chain self msg rest sub-machine)))))
-	(sub-machine (handle sub-machine msg))
-	(t nil)))
+Port ≡ id
+Owner ≡ Machine
+id ≡ <...>
+❲yes/no❳ ≡ <...>
+Machine ≡ <>
+Message ≡ <>
+
+;; imported, inherited
+owner.next (id)
+
+owner.terminate >> ❲yes/no❳
+
+
+
+❲❳
+≡

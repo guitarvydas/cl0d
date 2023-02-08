@@ -10,8 +10,10 @@
       ;; output queue
       (send . ,(lambda (port msg) (funcall (%lookup outq 'enqueue) (Output-Message/new port msg))))
       (empty-output? . ,(lambda () (funcall (%lookup outq 'empty?))))
-      (for-each-output . ,(lambda (f) (funcall (%lookup outq 'for-each) f)))
       (clear-output . ,(lambda () (funcall (%lookup outq 'clear))))
       (outputs . ,(lambda () (funcall (%lookup outq 'contents))))
+      (for-each-output . ,(lambda (f) 
+                            (let ((output-list (funcall (%lookup outq 'contents))))
+                              (mapc f output-list))))
       )))
 

@@ -1,6 +1,6 @@
 (defun Leaf/new (given-name f)
   (let ((eh (Eh/new (format nil "~a/~a" given-name "Leaf"))))
-    `((handle . ,(lambda (msg) (format *error-output* "zzz in Leaf/handle~%") (funcall f msg)))
+    `((handle . ,(lambda (msg) (funcall f msg)))
       (enter . ,(lambda ()))
       (exit . ,(lambda ()))
       (reset . ,(lambda ()))
