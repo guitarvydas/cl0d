@@ -13,7 +13,7 @@
             "state": {
               "type": "excalidraw",
               "state": {
-                "file": "Excalidraw/HSM as Drawing 2023-02-04 06.42.41.excalidraw.md"
+                "file": "Excalidraw/xxx HSM as Drawing 2023-02-04 06.42.41.excalidraw.md"
               }
             }
           },
@@ -23,12 +23,22 @@
             "state": {
               "type": "excalidraw",
               "state": {
-                "file": "Excalidraw/Drawing 2023-02-07 05.58.42.excalidraw.md"
+                "file": "Excalidraw/xxx Development Echo Drawing 2023-02-07 05.58.42.excalidraw.md"
+              }
+            }
+          },
+          {
+            "id": "02f6b3b90bf0f1a5",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md"
               }
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -94,7 +104,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/Drawing 2023-02-07 05.58.42.excalidraw.md",
+                "file": "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -111,7 +121,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/Drawing 2023-02-07 05.58.42.excalidraw.md",
+                "file": "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -134,7 +144,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/Drawing 2023-02-07 05.58.42.excalidraw.md"
+                "file": "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md"
               }
             }
           }
@@ -156,16 +166,17 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "f1dcd917188551f8",
+  "active": "02f6b3b90bf0f1a5",
   "lastOpenFiles": [
-    "Excalidraw/ė as Drawing 2023-02-04 16.08.46.excalidraw.md",
-    "Excalidraw/Drawing 2023-02-07 05.58.42.excalidraw.md",
-    "Excalidraw/Echo as Drawing 2023-02-04 15.17.46.excalidraw.md",
-    "Excalidraw/Leaf as Drawing 2023-02-04 06.42.41.excalidraw.md",
-    "Excalidraw/HSM as Drawing 2023-02-04 06.42.41.excalidraw.md",
-    "Excalidraw/Receiving Queue as Drawing 2023-02-04 15.49.01.excalidraw.md",
-    "Excalidraw/Runnable as Drawing 2023-02-04 15.53.18.excalidraw.md",
-    "Excalidraw/Sending Queue as Drawing 2023-02-04 15.26.20.excalidraw.md",
-    "Excalidraw/State as Drawing 2023-02-04 06.18.15.excalidraw.md"
+    "Excalidraw/Echo Drawing 2023-02-07 05.58.42.excalidraw.md",
+    "Excalidraw/xxx State as Drawing 2023-02-04 06.18.15.excalidraw.md",
+    "Excalidraw/xxx Sending Queue as Drawing 2023-02-04 15.26.20.excalidraw.md",
+    "Excalidraw/xxx Runnable as Drawing 2023-02-04 15.53.18.excalidraw.md",
+    "Excalidraw/xxx Receiving Queue as Drawing 2023-02-04 15.49.01.excalidraw.md",
+    "Excalidraw/xxx Leaf as Drawing 2023-02-04 06.42.41.excalidraw.md",
+    "Excalidraw/xxx HSM as Drawing 2023-02-04 06.42.41.excalidraw.md",
+    "Excalidraw/xxx ė as Drawing 2023-02-04 16.08.46.excalidraw.md",
+    "Excalidraw/xxx Development Echo Drawing 2023-02-07 05.58.42.excalidraw.md",
+    "Excalidraw/xxx Echo as Drawing 2023-02-04 15.17.46.excalidraw.md"
   ]
 }

@@ -50,14 +50,24 @@
                            ))))
     (values)))
 
+(defun display-message (msg)
+  (format *standard-output* "{~a: ~a}~%"
+          (apply (%lookup msg 'port) nil)
+          (apply (%lookup msg 'data) nil)))
+
 (defun test8 ()
   (let ((echo (Echo/new "test")))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 1)))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 2)))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 3)))
     (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "Hello")))
     (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "World")))
-    (apply (%lookup echo 'for-each-output)
-           (list (lambda (msg)
-                   (format *standard-output* "{~a: ~a}~%"
-                           (apply (%lookup msg 'port) nil)
-                           (apply (%lookup msg 'data) nil)
-                           ))))
+    (apply (%lookup echo 'for-each-output) (list #'display-message))
     (values)))
+
+(defun test9 ()
+  (let ((env (Echo-Envelope/new "test")))
+    (apply (%lookup env 'handle) (list (Input-Message/new "stdin" "Hello")))
+    (apply (%lookup env 'for-each-output) (list #'display-message))
+    (values)))
+
