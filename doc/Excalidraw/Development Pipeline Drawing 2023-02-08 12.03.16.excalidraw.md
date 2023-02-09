@@ -213,7 +213,7 @@ across ^aOrHg9NI
 
            1       2 ^V9BCxi74
 
-handle (message) ≡ route message using connections table ^3Tc33C53
+handle (message) ≡ push message on inq, route messages using connections table ^3Tc33C53
 
 enter ≡ enter all children, λ(self), mark self as busy ^vsL0efLf
 
@@ -221,7 +221,8 @@ exit ≡ reset all children, λ(self), mark self as not busy ^dV0h6bRL
 
 reset ≡ reset all children, mark self as not busy? ^uYMPilfy
 
-step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle ^RY6Rpxtr
+step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle
+ then route messages ^RY6Rpxtr
 
 busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 
@@ -6231,8 +6232,8 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 		},
 		{
 			"type": "text",
-			"version": 2121,
-			"versionNonce": 1473305005,
+			"version": 2177,
+			"versionNonce": 1687300717,
 			"isDeleted": false,
 			"id": "3Tc33C53",
 			"fillStyle": "hachure",
@@ -6241,28 +6242,28 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 			"roughness": 1,
 			"opacity": 50,
 			"angle": 0,
-			"x": -697.2411439264971,
+			"x": -697.3142640436846,
 			"y": 3367.806767584999,
 			"strokeColor": "#000000",
 			"backgroundColor": "transparent",
-			"width": 460,
+			"width": 638,
 			"height": 20,
 			"seed": 487488035,
 			"groupIds": [],
 			"roundness": null,
 			"boundElements": null,
-			"updated": 1675940548903,
+			"updated": 1675952248082,
 			"link": null,
 			"locked": false,
 			"fontSize": 16,
 			"fontFamily": 1,
-			"text": "handle (message) ≡ route message using connections table",
-			"rawText": "handle (message) ≡ route message using connections table",
+			"text": "handle (message) ≡ push message on inq, route messages using connections table",
+			"rawText": "handle (message) ≡ push message on inq, route messages using connections table",
 			"baseline": 14,
 			"textAlign": "left",
 			"verticalAlign": "top",
 			"containerId": null,
-			"originalText": "handle (message) ≡ route message using connections table"
+			"originalText": "handle (message) ≡ push message on inq, route messages using connections table"
 		},
 		{
 			"type": "text",
@@ -6371,8 +6372,8 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 		},
 		{
 			"type": "text",
-			"version": 2907,
-			"versionNonce": 2082739885,
+			"version": 2929,
+			"versionNonce": 1997743917,
 			"isDeleted": false,
 			"id": "RY6Rpxtr",
 			"fillStyle": "hachure",
@@ -6381,33 +6382,33 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 			"roughness": 1,
 			"opacity": 50,
 			"angle": 0,
-			"x": -693.5295093068858,
+			"x": -693.5672900686045,
 			"y": 3471.8352781887406,
 			"strokeColor": "#000000",
 			"backgroundColor": "transparent",
-			"width": 858,
-			"height": 20,
+			"width": 857,
+			"height": 40,
 			"seed": 1935314275,
 			"groupIds": [],
 			"roundness": null,
 			"boundElements": null,
-			"updated": 1675940269954,
+			"updated": 1675952118298,
 			"link": null,
 			"locked": false,
 			"fontSize": 16,
 			"fontFamily": 1,
-			"text": "step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle",
-			"rawText": "step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle",
-			"baseline": 14,
+			"text": "step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle\n then route messages",
+			"rawText": "step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle\n then route messages",
+			"baseline": 34,
 			"textAlign": "left",
 			"verticalAlign": "top",
 			"containerId": null,
-			"originalText": "step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle"
+			"originalText": "step ≡ if any child is busy? step all busy? children, else, if input queue not empty? consume input and handle\n then route messages"
 		},
 		{
 			"type": "text",
-			"version": 2783,
-			"versionNonce": 275124077,
+			"version": 2822,
+			"versionNonce": 14598915,
 			"isDeleted": false,
 			"id": "B1vU6at2",
 			"fillStyle": "hachure",
@@ -6416,8 +6417,8 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 			"roughness": 1,
 			"opacity": 50,
 			"angle": 0,
-			"x": -693.5665576467295,
-			"y": 3499.005039152874,
+			"x": -691.6864917287608,
+			"y": 3518.8824195239677,
 			"strokeColor": "#000000",
 			"backgroundColor": "transparent",
 			"width": 367,
@@ -6426,7 +6427,7 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 			"groupIds": [],
 			"roundness": null,
 			"boundElements": null,
-			"updated": 1675940274559,
+			"updated": 1675952105343,
 			"link": null,
 			"locked": false,
 			"fontSize": 16,
@@ -6568,8 +6569,8 @@ busy ? ≡ True if any child is busy?, else False ^B1vU6at2
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 1004.4051705232425,
-		"scrollY": -3014.2100323433483,
+		"scrollX": 995.4051705232425,
+		"scrollY": -2907.2100323433483,
 		"zoom": {
 			"value": 1
 		},
