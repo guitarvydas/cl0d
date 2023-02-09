@@ -17,3 +17,5 @@
         (cdr pair)
       (error (format nil "internal error % can't find ~a in ~a" key alist)))))
 
+(defun %call (alist key &rest args)
+  (apply (%lookup alist key) args))

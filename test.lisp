@@ -65,6 +65,16 @@
     (apply (%lookup echo 'for-each-output) (list #'display-message))
     (values)))
 
+(defun test8call ()
+  (let ((echo (Echo/new "test")))
+    (%call echo 'handle (Input-Message/new "stdin" 1))
+    (%call echo 'handle (Input-Message/new "stdin" 2))
+    (%call echo 'handle (Input-Message/new "stdin" 3))
+    (%call echo 'handle (Input-Message/new "stdin" "Hello"))
+    (%call echo 'handle (Input-Message/new "stdin" "World"))
+    (%call echo 'for-each-output #'display-message)
+    (values)))
+
 (defun sequential ()
   (let ((children (list 
 		   (Echo/new "child 1")
