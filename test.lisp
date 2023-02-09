@@ -35,22 +35,20 @@
     ))
 
 (defun test6 ()
-  (let ((eh (Eh/new "test")))
-    (let ((echo (Echo/new eh)))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "hello world")))
-      (apply (%lookup echo 'outputs) nil))))
+  (let ((echo (Echo/new "test")))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "hello world")))
+    (apply (%lookup echo 'outputs) nil)))
 
 (defun test7 ()
-  (let ((eh (Eh/new "test")))
-    (let ((echo (Echo/new eh)))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "hello world")))
-      (apply (%lookup echo 'for-each-output)
-             (list (lambda (msg)
-                     (format *standard-output* "{~a: ~a}~%"
-                             (apply (%lookup msg 'port) nil)
-                             (apply (%lookup msg 'data) nil)
-                             ))))
-      (values))))
+  (let ((echo (Echo/new "test")))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "hello world")))
+    (apply (%lookup echo 'for-each-output)
+           (list (lambda (msg)
+                   (format *standard-output* "{~a: ~a}~%"
+                           (apply (%lookup msg 'port) nil)
+                           (apply (%lookup msg 'data) nil)
+                           ))))
+    (values)))
 
 (defun display-message (msg)
   (format *standard-output* "{~a: ~a}~%"
@@ -58,15 +56,14 @@
           (apply (%lookup msg 'data) nil)))
 
 (defun test8 ()
-  (let ((eh (Eh/new "test")))
-    (let ((echo (Echo/new eh)))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 1)))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 2)))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 3)))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "Hello")))
-      (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "World")))
-      (apply (%lookup echo 'for-each-output) (list #'display-message))
-      (values))))
+  (let ((echo (Echo/new "test")))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 1)))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 2)))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" 3)))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "Hello")))
+    (apply (%lookup echo 'handle) (list (Input-Message/new "stdin" "World")))
+    (apply (%lookup echo 'for-each-output) (list #'display-message))
+    (values)))
 
 (defun sequential ()
   (let ((children (list 

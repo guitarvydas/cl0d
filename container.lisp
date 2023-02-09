@@ -9,7 +9,9 @@ busy?
 
 (defun Container/new (name eh children connections)
   (let ((busy nil))
-    `((handle . ,(lambda (msg) ... ))
+    `((handle . ,(lambda (msg) 
+		   (%call eh 'push msg)
+		   (route-messages children connections)))
       (enter . ,(lambda ()))
       (exit . ,(lambda ()))
       (reset . ,(lambda () (reset-children children) (setf busy nil)))
