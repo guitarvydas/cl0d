@@ -1,7 +1,8 @@
-(defun Schedulable/new ()
+(defun Schedulable/new (given-name)
   (let ((inq (FIFO/new))
 	(outq (FIFO/new)))
     `(
+      (name . ,(lambda () (format nil "~a/Schedulable" given-name)))
       ;; input queue
       (enqueue-input . ,(lambda (x) (funcall (%lookup inq 'enqueue) x)))
       (dequeue-input . ,(lambda () (funcall (%lookup inq 'dequeue))))

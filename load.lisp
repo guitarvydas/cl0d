@@ -13,7 +13,9 @@
 	  ;; leaf
 	  (ld "leaf.lisp")
 	  ;; connections
-	  (ld "dir.lisp")
+	  (ld "connection.lisp")
+	  ;; container
+	  (ld "container.lisp")
           ;; test
 	  (ld "echo.lisp")
           (ld "test.lisp")
