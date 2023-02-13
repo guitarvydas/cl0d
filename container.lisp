@@ -11,11 +11,14 @@
 				  (route-single-datum self-tail self-tail 
 						      (%call msg 'port) (%call msg 'datum) 
 						      children connections))))
-	      (cons `(handle . ,(lambda (msg) (apply route-single (list msg))))
+	      (cons `(handle . ,(lambda (msg)
+                                  (apply route-single (list msg))
+                                  (loop while (any-child-busy? children)
+                                        do (step-all-children self-tail children connections))))
 		    (cons `(step . ,(lambda () ;; return t if work was done, else nil
 				      (cond ((any-child-busy? children) 
 					     ;; punt to any (all) child that is still busy
-					     (step-all-children children)
+					     (step-all-children self-tail children connections)
 					     t)
 					    ((not (%call eh 'empty-input?)) 
 					     ;; no child busy - is there work in my inq?
@@ -70,5 +73,8 @@
 		  (t nil))) ;; {from, port} doesn't match - pass
 	connections))
 
-(defun step-all-children (children)
-  (mapc #'(lambda (child) (%call child 'step)) children))
+(defun step-all-children (self children connections)
+  (mapc #'(lambda (child)
+            (%call child 'step)
+            (route-all-outputs-from-single-child self child children connections))
+        children))

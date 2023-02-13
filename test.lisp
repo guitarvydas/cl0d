@@ -85,7 +85,11 @@
 			(Up/new 1 "err" 0 "err")
 			(Up/new 2 "out" 0 "out")
 			(Up/new 2 "err" 0 "err"))))
-      (Sequential/new "sequential" children connections))))
+      (let ((seq (Sequential/new "sequential" children connections)))
+        (%call seq 'handle (Input-Message/new "stdin" "Hello"))
+        ;;(%call seq 'handle (Input-Message/new "stdin" "World"))
+        (%call seq 'for-each-output #'display-message)
+        (values)))))
 
 ;; (defun parallel ()
 ;;   (let ((children (list 
