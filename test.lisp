@@ -75,7 +75,7 @@
     (%call echo 'for-each-output #'display-message)
     (values)))
 
-(defun sequential ()
+(defun seqtest ()
   (let ((children (list 
 		   (Echo/new "child 1")
 		   (Echo/new "child 2"))))
@@ -85,16 +85,16 @@
 			(Up/new 1 "err" 0 "err")
 			(Up/new 2 "out" 0 "out")
 			(Up/new 2 "err" 0 "err"))))
-      (SequentialTest/new "sequential" children connections))))
+      (Sequential/new "sequential" children connections))))
 
-(defun parallel ()
-  (let ((children (list 
-		   (Echo/new "child 1")
-		   (Echo/new "child 2"))))
-    (let ((connections (list
-			(Down/new 0 "in" 1 "in")
-			(Across/new 1 "out" 2 "in")
-			(Up/new 1 "err" 0 "err")
-			(Up/new 2 "out" 0 "out")
-			(Up/new 2 "err" 0 "err"))))
-      (ParallelTest/new "sequential" children connections))))
+;; (defun parallel ()
+;;   (let ((children (list 
+;; 		   (Echo/new "child 1")
+;; 		   (Echo/new "child 2"))))
+;;     (let ((connections (list
+;; 			(Down/new 0 "in" 1 "in")
+;; 			(Across/new 1 "out" 2 "in")
+;; 			(Up/new 1 "err" 0 "err")
+;; 			(Up/new 2 "out" 0 "out")
+;; 			(Up/new 2 "err" 0 "err"))))
+;;       (ParallelTest/new "sequential" children connections))))

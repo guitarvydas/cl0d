@@ -6,10 +6,9 @@
 	  ;; basics
 	  (ld "lookup.lisp")
 	  (ld "fifo.lisp")
+	  (ld "message.lisp")
 	  (ld "schedulable.lisp")
 	  (ld "eh.lisp")
-          ;; Message
-	  (ld "message.lisp")
 	  ;; leaf
 	  (ld "leaf.lisp")
 	  ;; connections
@@ -18,5 +17,6 @@
 	  (ld "container.lisp")
           ;; test
 	  (ld "echo.lisp")
+          (ld "sequential.lisp")
           (ld "test.lisp")
 ))

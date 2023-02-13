@@ -4,7 +4,7 @@
 	  (let ((self-tail
 		 `((enter . ,(lambda ()))
 		   (exit . ,(lambda ()))
-		   (reset . ,(lambda () (reset-children children) (setf busy nil)))
+		   (reset . ,(lambda () (reset-children children)))
 		   (busy? . ,(lambda () (any-child-busy? children)))
 		   (%else . ,eh))))
 	    (let ((route-single (lambda (msg)
@@ -34,16 +34,16 @@
 
 (defun reset-children (children)
   (mapc #'(lambda (child)
-	    (%delegate child 'reset)))
-  children)
+	    (%delegate child 'reset))
+        children))
 
 (defun route-all-outputs-from-all-children (self children connections)
-  (mapc #'(lamdba (child) (route-all-outputs-from-single-child self child children connections))
+  (mapc #'(lambda (child) (route-all-outputs-from-single-child self child children connections))
 	children))
 
 (defun route-all-outputs-from-single-child (self child children connections)
   (mapc #'(lambda (msg) 
-	    (route-single-datum child (%call msg 'port) children connections))
+	    (route-single-datum self child (%call msg 'port) (%call msg 'datum) children connections))
 	(%call child 'outputs-as-list)))
 
 (defun route-single-datum (self from port datum children connections)

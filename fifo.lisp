@@ -17,6 +17,7 @@
       (let ((namespace `(
                          (enqueue . ,enqueue)
                          (dequeue . ,dequeue)
+                         (push . ,push)
                          (clear . ,clear)
                          (empty? . ,empty?)
                          (contents . ,contents)
