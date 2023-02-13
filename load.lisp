@@ -12,6 +12,8 @@
 	  (ld "message.lisp")
 	  ;; leaf
 	  (ld "leaf.lisp")
+	  ;; connections
+	  (ld "dir.lisp")
           ;; test
 	  (ld "echo.lisp")
           (ld "test.lisp")

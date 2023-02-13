@@ -19,3 +19,6 @@
 
 (defun %call (alist key &rest args)
   (apply (%lookup alist key) args))
+
+(defun %delegate (alist key &rest args) ;; same as %call - this should probably be a macro
+  (apply (%lookup alist key) args))
