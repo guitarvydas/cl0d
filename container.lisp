@@ -6,7 +6,6 @@
 	(reset . ,(lambda () (reset-children children)))
 	(busy? . ,(lambda () (any-child-busy? children)))
 	(handle . ,(lambda (msg)
-(format *error-output* "container handle ~a~%" msg)
 		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)))
 	
 	(step . ,(lambda ()
@@ -21,9 +20,7 @@
 	
 	(step-to-completion . ,(lambda ()
 				 (loop while (any-child-busy? children)
-				       do (progn
-					    (step-all-children eh children connections)
-					    (route-inner-messages eh children connections)))))
+				       do (step-all-children eh children connections))))
 	(%else . ,eh)))))
 
 (defun any-child-busy? (children)

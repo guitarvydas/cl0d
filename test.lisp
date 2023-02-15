@@ -75,6 +75,18 @@
     (%call echo 'for-each-output #'display-message)
     (values)))
 
+(defun seqtest0 ()
+  (let ((children (list (Echo/new "child 1"))))
+    (let ((connections (list
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
+			(Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout")))))
+      (let ((seq (Sequential/new "sequential" children connections)))
+        (%call seq 'handle (Input-Message/new "stdin" "Hello"))
+        (%call seq 'step-to-completion)
+        (apply (%lookup seq 'for-each-output) (list #'display-message))
+        (values)))))
+
 (defun seqtest ()
   (let ((children (list 
 		   (Echo/new "child 1")
