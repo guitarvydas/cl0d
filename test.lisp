@@ -53,7 +53,7 @@
 (defun display-message (msg)
   (format *standard-output* "{~a: ~a}~%"
           (apply (%lookup msg 'port) nil)
-          (apply (%lookup msg 'data) nil)))
+          (apply (%lookup msg 'datum) nil)))
 
 (defun test8 ()
   (let ((echo (Echo/new "test")))
@@ -89,7 +89,8 @@
         (%call seq 'handle (Input-Message/new "stdin" "Hello"))
         (%call seq 'step-to-completion)
         ;;(%call seq 'handle (Input-Message/new "stdin" "World"))
-        (%call seq 'for-each-output #'display-message)
+        (apply (%lookup seq 'for-each-output) (list #'display-message))
+        ;; ??? (%call seq 'for-each-output #'display-message)
         (values)))))
 
 ;; (defun parallel ()

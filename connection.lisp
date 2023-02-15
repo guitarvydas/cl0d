@@ -2,11 +2,13 @@
 
 (defun Sender/new (component port)
   `((component . ,(lambda () component))
-    (port . ,(lambda () port))))
+    (port . ,(lambda () port))
+    (%type . ,(lambda () 'Sender))))
 
 (defun Receiver/new (component port)
   `((component . ,(lambda () component))
-    (port . ,(lambda () port))))
+    (port . ,(lambda () port))
+    (%type . ,(lambda () 'Receiver))))
 
 
 ;; not meant to be exported - Connector/new is meant to be private to the constructors
@@ -15,7 +17,7 @@
   `((sender . ,(lambda () sender))
     (receiver . ,(lambda () receiver))
     (sender-matches? . ,(lambda (other)
-			  (cond ((eq 'Sender (type-of other))
+			  (cond ((eq 'Sender (%type-of other))
 				 (let ((other-component (%call other 'component))
 				       (other-port (%call other 'port))
 				       (my-component (%call sender 'component))
@@ -23,7 +25,8 @@
 				   (cond ((and (equal other-component my-component)
 					       (equal other-port my-port))
 					  $True)
-					 (t $False))))					 
+					 (t
+                                          $False))))					 
 				(t $False)))
     )))
 

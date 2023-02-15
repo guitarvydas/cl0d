@@ -5,7 +5,7 @@
 	(let ((leaf (Leaf/new name indirect-f)))
           (setf f (lambda (msg)
                     (format *error-output* "Echo handle ~a~%" (format-message msg))
-                    (apply (%lookup leaf 'send) (list "stdout" (apply (%lookup msg 'data) nil)))))
+                    (apply (%lookup leaf 'send) (list "stdout" (apply (%lookup msg 'datum) nil)))))
           `((func . ,f)
             (%else . ,leaf)))))))
 
