@@ -17,5 +17,7 @@
   `((port . ,(lambda () port))
     (datum . ,(lambda () v))))
 
+(defun format-message (m)
+  (format nil "<~a: ~a>" (%call m 'port) (%call m 'datum)))
 
         

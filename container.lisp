@@ -1,80 +1,102 @@
 (defun Container/new (given-name children connections)
   (let ((name (format nil "%a/Container" given-name)))
     (let ((eh (Eh/new name)))
-	  (let ((self-tail
-		 `((enter . ,(lambda ()))
-		   (exit . ,(lambda ()))
-		   (reset . ,(lambda () (reset-children children)))
-		   (busy? . ,(lambda () (any-child-busy? children)))
-		   (%else . ,eh))))
-	    (let ((route-single (lambda (msg)
-				  (route-single-datum self-tail self-tail 
-						      (%call msg 'port) (%call msg 'datum) 
-						      children connections))))
-	      (cons `(handle . ,(lambda (msg)
-                                  (apply route-single (list msg))
-                                  (loop while (any-child-busy? children)
-                                        do (step-all-children self-tail children connections))))
-		    (cons `(step . ,(lambda () ;; return t if work was done, else nil
-				      (cond ((any-child-busy? children) 
-					     ;; punt to any (all) child that is still busy
-					     (step-all-children self-tail children connections)
-					     t)
-					    ((not (%call eh 'empty-input?)) 
-					     ;; no child busy - is there work in my inq?
-					     (let ((msg (%call eh 'dequeue-input)))
-					       (apply route-single (list msg))
-					       t))
-					    (t nil))))
-			  self-tail)))))))
+      `((enter . ,(lambda ()))
+	(exit . ,(lambda ()))
+	(reset . ,(lambda () (reset-children children)))
+	(busy? . ,(lambda () (any-child-busy? children)))
+	(handle . ,(lambda (msg)
+		     (route-downwards (%call msg 'port) (%call msg 'datum) eh children connections)))
+	
+	(step . ,(lambda ()
+		   (cond ((any-child-busy? children)
+			  (step-all-children eh children)
+			  True)
+			 ((cond ((not (%call eh 'empty-input?))
+				 (let ((msg (%call eh 'dequeue-input)))
+				   (route-downwards (%call msg 'port) (%call msg 'datum) eh children connections))
+				 True)
+				(t False))))))
+	
+	(step-to-completion . ,(lambda ()
+				 (loop while (any-child-busy? children)
+				       do (progn
+					    (step-all-children eh children)
+					    (route-inner-messages children connections)))))
+	(%else . ,eh)))))
 
 (defun any-child-busy? (children)
   (mapc #'(lambda (child)
-	    (when (%delegate child 'busy?)
+	    (when (%call child 'busy?)
 	      (return-from any-child-busy? t)))
 	children)
   nil)
 
 (defun reset-children (children)
   (mapc #'(lambda (child)
-	    (%delegate child 'reset))
+	    (%call child 'reset))
         children))
 
-(defun route-all-outputs-from-all-children (self children connections)
-  (mapc #'(lambda (child) (route-all-outputs-from-single-child self child children connections))
+(defun step-all-children (myeh children connections)
+  (mapc #'(lambda (child)
+            (%call child 'step)
+            (route-inner-messages myeh children connections))
+        children))
+
+(defun route-inner-messages (myeh children connections)
+  (mapc #'(lambda (child) (route-all-inner-outputs-from-single-child child myeh children connections))
 	children))
 
-(defun route-all-outputs-from-single-child (self child children connections)
+(defun route-all-inner-outputs-from-single-child (child myeh children connections)
   (mapc #'(lambda (msg) 
-	    (route-single-datum self child (%call msg 'port) (%call msg 'datum) children connections))
+	    (route-inner-single-datum child (%call msg 'port) (%call msg 'datum) myeh children connections))
 	(%call child 'outputs-as-list)))
 
-(defun route-single-datum (self from port datum children connections)
-  ;; Container routes one datum to all receivers connected to the given {from,port} combination
+(defun route-inner-single-datum (from port datum myeh children connections)
+  ;; Container routes one datum from a child to all receivers connected to the given {from,port} combination
+  ;; handle across and up connections only - down and through do not apply here
   (mapc #'(lambda (connection)
-	    (cond ((and (eq port (%call connection 'sender-port))
-			(eq from (%call connection 'sender self children)))
+	    (cond ((%call connection sender-matches? from port)
 		   (let ((kind (%call connection 'kind))
 			 (receiver (%call connection 'receiver self children)))
 		     (cond 
-		      ((or (eq kind 'across)
-			   (eq kind 'down))
+		      ((equal kind 'across)
 		       (let ((receiver-port (%call connection 'receiver-port)))
 			 (let ((msg (Input-Message/new receiver-port datum)))
 			   (%call receiver 'enqueue-input msg))))
 		      
-		      ((or (eq kind 'up)
-			   (eq kind 'through))
+		      ((equal kind 'up)
 		       (let ((receiver-port (%call connection 'receiver-port)))
 			 (let ((msg (Output-Message/new receiver-port datum)))
-			   (%call receiver 'enqueue-output msg))))
+			   (%call myeh 'enqueue-output msg))))
 		      
-		      (t (error "internal error 1 in route-single-item")))))
+		      ((or (equal kind 'down) (equal kind 'through)) nil)
+
+		      (t (error "internal error 1 in route-inner-single-item")))))
 		  (t nil))) ;; {from, port} doesn't match - pass
 	connections))
 
-(defun step-all-children (self children connections)
-  (mapc #'(lambda (child)
-            (%call child 'step)
-            (route-all-outputs-from-single-child self child children connections))
-        children))
+(defun route-downwards (port datum myeh children connections)
+  ;; Container routes its own input to its children and/or itself
+  ;; across and up do not apply here
+  (mapc #'(lambda (connection)
+	    (cond ((%call connection sender-matches? (Sender/new Me port))
+		   (let ((kind (%call connection 'kind))
+			 (receiver (%call connection 'receiver self children)))
+		     (cond 
+		      ((equal kind 'down)
+		       (let ((receiver-port (%call connection 'receiver-port)))
+			 (let ((msg (Input-Message/new receiver-port datum)))
+			   (%call receiver 'enqueue-input msg))))
+		      
+		      ((equal kind 'through)
+		       (let ((receiver-port (%call connection 'receiver-port)))
+			 (let ((msg (Output-Message/new receiver-port datum)))
+			   (%call myeh 'enqueue-output msg))))
+		      
+		      ((or (equal kind 'up) (equal kind 'across)) nil)
+
+		      (t (error "internal error 2 in route-downwards")))))
+		  (t nil))) ;; {Me, port} doesn't match - pass
+	connections))
+
