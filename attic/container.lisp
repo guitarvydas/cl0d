@@ -51,3 +51,25 @@
 (defmethod start ((self Container) port data)
   (inject self port data)
   (run self))
+
+
+---
+
+
+  
+;;;
+
+(defun map-child-id-to-component (from-index self children)
+  (cond ((>= from-index 0) (nth from-index children))
+	(t self)))
+
+;; attic
+
+(defun route-input-message (msg self children connections)
+  (route-message msg -1 children connections))
+
+(defun route-messages-from (from/id self children connections)
+  (let ((from (map-child-id-to-component (from/id self children))))
+    (mapc #'(lambda (msg) (route-single-message from/id from msg children connections))
+	  (%delegate from 'outputs))))
+
