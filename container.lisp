@@ -10,7 +10,7 @@
 	
 	(step . ,(lambda ()
 		   (cond ((any-child-busy? children)
-			  (step-all-children eh children)
+			  (step-all-children eh children connections)
 			  True)
 			 ((cond ((not (%call eh 'empty-input?))
 				 (let ((msg (%call eh 'dequeue-input)))
@@ -21,8 +21,8 @@
 	(step-to-completion . ,(lambda ()
 				 (loop while (any-child-busy? children)
 				       do (progn
-					    (step-all-children eh children)
-					    (route-inner-messages children connections)))))
+					    (step-all-children eh children connections)
+					    (route-inner-messages eh children connections)))))
 	(%else . ,eh)))))
 
 (defun any-child-busy? (children)
@@ -56,9 +56,9 @@
   ;; Container routes one datum from a child to all receivers connected to the given {from,port} combination
   ;; handle across and up connections only - down and through do not apply here
   (mapc #'(lambda (connection)
-	    (cond ((%call connection sender-matches? from port)
+	    (cond ((%call connection 'sender-matches? from port)
 		   (let ((kind (%call connection 'kind))
-			 (receiver (%call connection 'receiver self children)))
+			 (receiver (%call connection 'receiver children)))
 		     (cond 
 		      ((equal kind 'across)
 		       (let ((receiver-port (%call connection 'receiver-port)))
@@ -80,9 +80,9 @@
   ;; Container routes its own input to its children and/or itself
   ;; across and up do not apply here
   (mapc #'(lambda (connection)
-	    (cond ((%call connection sender-matches? (Sender/new Me port))
+	    (cond ((%call connection 'sender-matches? (Sender/new Me port))
 		   (let ((kind (%call connection 'kind))
-			 (receiver (%call connection 'receiver self children)))
+			 (receiver (%call connection 'receiver children)))
 		     (cond 
 		      ((equal kind 'down)
 		       (let ((receiver-port (%call connection 'receiver-port)))

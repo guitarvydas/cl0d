@@ -79,12 +79,12 @@
   (let ((children (list 
 		   (Echo/new "child 1")
 		   (Echo/new "child 2"))))
-    (let ((connections (list
-			(Down/new (Sender/new Me "stdin") (Sender/new (child 1) "stdin"))
-			(Across/new (Sender/new (child 1) "stdout") (Receiver/new (child 2) "stdin"))
-			(Up/new (Sender/new (child 1) "stderr") (Receiver/new Me "stderr"))
-			(Up/new (Sender/new (child 2) "stdout") (Receiver/new Me "stdout"))
-			(Up/new (Sender/new (child 2) "stderr") (Receiver/new Me "stderr")))))
+        (let ((connections (list
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
+			(Across/new (Sender/new (nth 0 children) "stdout") (Receiver/new (nth 1 children) "stdin"))
+			(Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 1 children) "stdout") (Receiver/new $Me "stdout"))
+			(Up/new (Sender/new (nth 1 children) "stderr") (Receiver/new $Me "stderr")))))
       (let ((seq (Sequential/new "sequential" children connections)))
         (%call seq 'handle (Input-Message/new "stdin" "Hello"))
         (%call seq 'step-to-completion)

@@ -25,7 +25,7 @@
 					  $True)
 					 (t $False))))					 
 				(t $False)))
-    ))
+    )))
 
 
 ;; exported constructors for connectors of different kinds
