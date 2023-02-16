@@ -19,6 +19,6 @@
           ;; test
 	  (ld "echo.lisp")
           (ld "sequential.lisp")
-          ;(ld "echopipeline.lisp")
+          (ld "echopipeline.lisp")
           (ld "test.lisp")
 ))
