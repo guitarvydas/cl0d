@@ -103,11 +103,25 @@
 			(Up/new (Sender/new (nth 2 children) "stderr") (Receiver/new $Me "stderr")))))
           (let ((seq (Sequential/new "sequential" children connections)))
             (%call seq 'handle (Input-Message/new "stdin" "Hello"))
+            (%call seq 'handle (Input-Message/new "stdin" "World"))
             (%call seq 'step-to-completion)
-            ;;(%call seq 'handle (Input-Message/new "stdin" "World"))
             (apply (%lookup seq 'for-each-output) (list #'display-message))
             ;; ??? (%call seq 'for-each-output #'display-message)
             (values)))))
+
+(defun Seqtest0/new (????
+
+(defun seqtest2 ()
+  (let ((children (list (Seqtest0/new "container (child) 1"))))
+    (let ((connections (list
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
+			(Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout")))))
+      (let ((seq (Sequential/new "sequential" children connections)))
+        (%call seq 'handle (Input-Message/new "stdin" "Hello"))
+        (%call seq 'step-to-completion)
+        (apply (%lookup seq 'for-each-output) (list #'display-message))
+        (values)))))
 
 ;; (defun parallel ()
 ;;   (let ((children (list 

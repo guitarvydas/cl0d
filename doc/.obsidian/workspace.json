@@ -53,14 +53,50 @@
             "id": "2d896cc9e6b37b12",
             "type": "leaf",
             "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Component Indirect.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "70c7a87e5c92f589",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Sequential Test 0.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "69b708f7b2a340ab",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Sequential Test 0.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "ff2bbbc6c3e7be75",
+            "type": "leaf",
+            "state": {
               "type": "excalidraw",
               "state": {
-                "file": "Excalidraw/Container 2023-02-14 07.55.35.excalidraw.md"
+                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md"
               }
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -126,7 +162,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/Container 2023-02-14 07.55.35.excalidraw.md",
+                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -143,7 +179,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/Container 2023-02-14 07.55.35.excalidraw.md",
+                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -166,7 +202,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/Container 2023-02-14 07.55.35.excalidraw.md"
+                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md"
               }
             }
           }
@@ -188,17 +224,17 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "2d896cc9e6b37b12",
+  "active": "ff2bbbc6c3e7be75",
   "lastOpenFiles": [
+    "Sequential Test 2.md",
+    "Excalidraw/Sequential Test 0 2023-02-15 21.45.07.excalidraw.md",
+    "Sequential Test 0.md",
+    "Sequential Test 1.md",
+    "Excalidraw/Sequential Test 1 2023-02-15 22.48.39.excalidraw.md",
     "Component Indirect.md",
-    "Routing.md",
-    "Excalidraw/Routing 2023-02-11 12.07.50.excalidraw.md",
     "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md",
+    "Excalidraw/Routing 2023-02-11 12.07.50.excalidraw.md",
     "Excalidraw/Echo Drawing 2023-02-07 05.58.42.excalidraw.md",
-    "Excalidraw/xxx State as Drawing 2023-02-04 06.18.15.excalidraw.md",
-    "Excalidraw/xxx Sending Queue as Drawing 2023-02-04 15.26.20.excalidraw.md",
-    "Excalidraw/xxx Runnable as Drawing 2023-02-04 15.53.18.excalidraw.md",
-    "Excalidraw/xxx Receiving Queue as Drawing 2023-02-04 15.49.01.excalidraw.md",
-    "Excalidraw/xxx Leaf as Drawing 2023-02-04 06.42.41.excalidraw.md"
+    "Excalidraw/Container 2023-02-14 07.55.35.excalidraw.md"
   ]
 }
