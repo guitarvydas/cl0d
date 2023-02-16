@@ -10,7 +10,8 @@
       (let ((connections (list
                           (Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
                           (Across/new (Sender/new (nth 0 children) "stdout") (Receiver/new (nth 1 children) "stdin"))
-                          (Up/new (Sender/new (nth 1 children) "stdout") (Receiver/new $Me "stdout"))
+                          (Across/new (Sender/new (nth 1 children) "stdout") (Receiver/new (nth 2 children) "stdin"))
+                          (Up/new (Sender/new (nth 2 children) "stdout") (Receiver/new $Me "stdout"))
 
                           (Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
                           (Up/new (Sender/new (nth 1 children) "stderr") (Receiver/new $Me "stderr"))
