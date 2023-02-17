@@ -9,8 +9,11 @@
                       (apply (%lookup leaf 'send) (list "stdout" name))
                       (apply (%lookup leaf 'send) (list "stdout" (apply (%lookup msg 'datum) nil)))
                       )
-                    (progn
+                    #+nil(progn
                       (apply (%lookup leaf 'send) (list "stdout" (format nil "~a/~a" name (apply (%lookup msg 'datum) nil))))
+                      )
+                    (progn
+                      (apply (%lookup leaf 'send) (list "stdout" (apply (%lookup msg 'datum) nil)))
                       )
                     ))
           `((func . ,f)

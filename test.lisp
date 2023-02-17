@@ -131,14 +131,29 @@
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 
-;;(defun parallel-test0 ()
-;;   (let ((children (list 
-;; 		   (Echo/new "child 1")
-;; 		   (Echo/new "child 2"))))
-;;     (let ((connections (list
-;; 			(Down/new 0 "stdin" 1 "stdin")
-;; 			(Across/new 1 "stdout" 2 "stdin")
-;; 			(Up/new 1 "stderr" 0 "stderr")
-;; 			(Up/new 2 "stdout" 0 "stdout")
-;; 			(Up/new 2 "stderr" 0 "stderr"))))
-;;       (ParallelTest/new "sequential" children connections))))
+(defun partest2 ()
+  (let ((children (list
+                   (Echo-Pipeline/new "container (child) 1")
+                   (Echo-Pipeline/new "container (child) 2")
+                   (Echo-Pipeline/new "container (child) 3")
+                   )))
+    (let ((connections (list
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 1 children) "stdin"))
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 2 children) "stdin"))
+
+			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout"))
+			(Up/new (Sender/new (nth 1 children) "stdout") (Receiver/new $Me "stdout"))
+			(Up/new (Sender/new (nth 2 children) "stdout") (Receiver/new $Me "stdout"))
+
+			(Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 1 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 2 children) "stderr") (Receiver/new $Me "stderr"))
+                        )))
+      (let ((seq (Parallel/new "parallel" children connections)))
+        (%call seq 'handle (Input-Message/new "stdin" "parccHello"))
+        (%call seq 'handle (Input-Message/new "stdin" "parccWorld"))
+        (%call seq 'step-to-completion)
+        (apply (%lookup seq 'for-each-output) (list #'display-message))
+        (values)))))
+
