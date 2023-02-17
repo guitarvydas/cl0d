@@ -3,9 +3,9 @@
   ;; LW editor displays the Unicode I want differently than emacs does
   (let ((name (format nil "~a/[Echo pipeline]" given-name)))
     (let ((children (list
-                     (Echo/new "[leaf 1 (Echo)]")
-                     (Echo/new "[leaf 2 (Echo)]")
-                     (Echo/new "[leaf 3 (Echo)]")
+                     (Echo/new "[leaf 1]")
+                     (Echo/new "[leaf 2]")
+                     (Echo/new "[leaf 3]")
                      )))
       (let ((connections (list
                           (Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))

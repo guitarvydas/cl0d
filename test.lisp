@@ -110,18 +110,28 @@
             (values)))))
 
 (defun seqtest2 ()
-  (let ((children (list (Echo-Pipeline/new "container (child) 1"))))
+  (let ((children (list
+                   (Echo-Pipeline/new "container (child) 1")
+                   (Echo-Pipeline/new "container (child) 2")
+                   (Echo-Pipeline/new "container (child) 3")
+                   )))
     (let ((connections (list
 			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
+			(Across/new (Sender/new (nth 0 children) "stdout") (Receiver/new (nth 1 children) "stdin"))
+			(Across/new (Sender/new (nth 1 children) "stdout") (Receiver/new (nth 2 children) "stdin"))
+			(Up/new (Sender/new (nth 2 children) "stdout") (Receiver/new $Me "stdout"))
+
 			(Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
-			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout")))))
+			(Up/new (Sender/new (nth 1 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 2 children) "stderr") (Receiver/new $Me "stderr"))
+                        )))
       (let ((seq (Sequential/new "sequential" children connections)))
-        (%call seq 'handle (Input-Message/new "stdin" "ccHello"))
+        (%call seq 'handle (Input-Message/new "stdin" "seqccHello"))
         (%call seq 'step-to-completion)
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 
-;; (defun parallel ()
+;;(defun parallel-test0 ()
 ;;   (let ((children (list 
 ;; 		   (Echo/new "child 1")
 ;; 		   (Echo/new "child 2"))))
