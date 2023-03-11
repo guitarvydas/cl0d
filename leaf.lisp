@@ -6,6 +6,7 @@
 	(exit . ,(lambda ()))
 	(reset . ,(lambda ()))
 	(step . ,(lambda () nil))
+	(step-to-completion . ,(lambda () nil))
 	(busy? . ,(lambda () nil))
 	(%else . ,eh)
 	))))
