@@ -8,32 +8,38 @@
         "type": "tabs",
         "children": [
           {
-            "id": "eb0fc5fa43fb3a49",
-            "type": "leaf",
-            "state": {
-              "type": "excalidraw",
-              "state": {
-                "file": "Excalidraw/xxx HSM as Drawing 2023-02-04 06.42.41.excalidraw.md"
-              }
-            }
-          },
-          {
-            "id": "f1dcd917188551f8",
-            "type": "leaf",
-            "state": {
-              "type": "excalidraw",
-              "state": {
-                "file": "Excalidraw/xxx Development Echo Drawing 2023-02-07 05.58.42.excalidraw.md"
-              }
-            }
-          },
-          {
             "id": "02f6b3b90bf0f1a5",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md"
+                "file": "Sequential Test 0.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "5a015c5a3a7c135b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "connection.lisp.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "0635f65c5c66f0ea",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Echo.lisp.md",
+                "mode": "source",
+                "source": false
               }
             }
           },
@@ -89,14 +95,28 @@
             "id": "ff2bbbc6c3e7be75",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md"
+                "file": "Sequential Test 2.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "21c272146c24ed2c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Sequential Test 2.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -162,7 +182,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md",
+                "file": "Echo.lisp.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -179,7 +199,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md",
+                "file": "Echo.lisp.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -202,7 +222,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md"
+                "file": "Echo.lisp.md"
               }
             }
           }
@@ -224,17 +244,30 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "ff2bbbc6c3e7be75",
+  "active": "0635f65c5c66f0ea",
   "lastOpenFiles": [
-    "Sequential Test 2.md",
-    "Excalidraw/Sequential Test 0 2023-02-15 21.45.07.excalidraw.md",
+    "connection.lisp.md",
+    "Echo.lisp.md",
+    "leaf.lisp.md",
+    "eh.lisp.md",
+    "schedulable.lisp.md",
+    "message.lisp.md",
+    "fifo.lisp.md",
+    "load.lisp.md",
+    "lookup.lisp.md",
+    "files/const.lisp.md",
+    "files",
     "Sequential Test 0.md",
-    "Sequential Test 1.md",
-    "Excalidraw/Sequential Test 1 2023-02-15 22.48.39.excalidraw.md",
-    "Component Indirect.md",
     "Excalidraw/Development Pipeline Drawing 2023-02-08 12.03.16.excalidraw.md",
-    "Excalidraw/Routing 2023-02-11 12.07.50.excalidraw.md",
-    "Excalidraw/Echo Drawing 2023-02-07 05.58.42.excalidraw.md",
-    "Excalidraw/Container 2023-02-14 07.55.35.excalidraw.md"
+    "Excalidraw/xxx HSM as Drawing 2023-02-04 06.42.41.excalidraw.md",
+    "Excalidraw/xxx Development Echo Drawing 2023-02-07 05.58.42.excalidraw.md",
+    "Routing.md",
+    "Component Indirect.md",
+    "Sequential Test 2.md",
+    "Sequential Test 1.md",
+    "Excalidraw/Sequential Test 2 2023-02-15 22.57.14.excalidraw.md",
+    "Excalidraw/Sequential Test 0 2023-02-15 21.45.07.excalidraw.md",
+    "Excalidraw/Sequential Test 1 2023-02-15 22.48.39.excalidraw.md",
+    "Excalidraw/Routing 2023-02-11 12.07.50.excalidraw.md"
   ]
 }
