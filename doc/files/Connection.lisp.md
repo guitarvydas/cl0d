@@ -1,3 +1,4 @@
+# Connection.lisp
 A connection describes a routing path between a single Sender and a single Receiver.
 
 A Sender is a pair {Component, Port}.

@@ -1,3 +1,4 @@
+# leaf.lisp
 ```
   ...
   (let ((eh (Eh/new name)))
@@ -6,6 +7,7 @@
 	(exit . ,(lambda ()))
 	(reset . ,(lambda ()))
 	(step . ,(lambda () nil))
+	(step-to-completion . ,(lambda () nil))
 	(busy? . ,(lambda () nil))
 	(%else . ,eh)
 	...
@@ -22,6 +24,7 @@ Each component (*leaf* or *container*) implements the methods:
 - exit ()
 - reset ()
 - step ()
+- step-to-completion ()
 - busy?
 
 *Handle* accepts a single input message and contains the code (e.g. a λ) that is a reaction to the input message.  The code can produce zero outputs, but, if it creates 1 or more outputs, the outputs are placed on the output queue using a `send()` function call.
@@ -35,3 +38,5 @@ A *leaf* completes its work in one fell swoop, so it is never *busy*.
 Likewise, *enter*, *exit*, and *reset* don't need to do anything, in the case of a *leaf*.
 
 See `echo.lisp` for an example of a concrete *leaf* implementation.
+
+The API entry point `step-to-completion ()` is a convenience for top-level components.  The intent is to continue stepping all children until quiescence.  A *leaf* has no children, hence, this entry point is a no-op.

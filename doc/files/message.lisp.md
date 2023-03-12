@@ -1,3 +1,5 @@
+# message.lisp
+```
 (defun Input-Message/new (port v)
   `((port . ,(lambda () port))
     (datum . ,(lambda () v))))
@@ -5,6 +7,7 @@
 (defun Output-Message/new (port v)
   `((port . ,(lambda () port))
     (datum . ,(lambda () v))))
+```
 
 This file creates two kinds of messages - input and output.
 

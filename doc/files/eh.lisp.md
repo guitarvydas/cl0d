@@ -1,3 +1,4 @@
+# eh.lisp
 *Eh*[^eh] implements a *schedulable* component, wrapping a name around it.
 
 In this prototype, we see the `%else` key.  This is used by the `%lookup` function to find information in the chain of ancestors of a component. 

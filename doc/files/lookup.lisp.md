@@ -1,3 +1,4 @@
+# lookup.lisp
 Functions and attributes are looked up by following upwards from a child to its ancestors.  This is  analogous to the way that JavaScript works.
 
 `%lookup()` is the main lookup function

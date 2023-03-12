@@ -1,10 +1,11 @@
+# load.lisp
 Loads the files required by this project without using ASDF or Lispworks system definition file.
 
 Lisp needs a full pathname to load a source file, so we use the variable `root` to define the project directory and we define a sub-function `ld` that loads a file from that project directory.
 
 Order is important, the basics need to be loaded before leaf and container.  Test code needs to be loaded last.
 
-There are 3 main test files - sequential, parallel and echopipeline. `Test.lisp` is used to compose variations of the tests.
+There are 2 main test files - sequential, and, parallel. `Test.lisp` is used to compose variations of the tests. `Echopipeline` is a more ambitious test still under development.
 
 ```
 (declaim (optimize (debug 3) (safety 3) (speed 0)))
