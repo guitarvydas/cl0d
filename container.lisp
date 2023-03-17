@@ -11,14 +11,9 @@
   (mapc #'(lambda (child)
             (cond ((not (%call child 'empty-input?))
                    (let ((msg (%call child 'dequeue-input)))
-                     (%call child 'handle msg))))
-            (route-and-clear-inner-messages myeh children connections))
+                     (%call child 'handle msg))
+                   (route-and-clear-all-inner-outputs-from-single-child child myeh connections))))
         children))
-
-(defun route-and-clear-inner-messages (myeh children connections)
-  (mapc #'(lambda (child)
-            (route-and-clear-all-inner-outputs-from-single-child child myeh connections))
-	children))
 
 (defun route-and-clear-all-inner-outputs-from-single-child (child myeh connections)
   (mapc #'(lambda (msg) 
