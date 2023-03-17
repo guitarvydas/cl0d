@@ -33,15 +33,12 @@
                            (receiver-component (%call (%call connection 'receiver) 'component)))
                        (cond 
                         ((equal kind 'across)
-                         (let ()
-                           (let ()
-                             (let ((msg (Input-Message/new receiver-port datum)))
-                               (%call receiver-component 'enqueue-input msg)))))
+                         (let ((msg (Input-Message/new receiver-port datum)))
+                           (%call receiver-component 'enqueue-input msg)))
                         
                         ((equal kind 'up)
-                         (let ()
-                           (let ((msg (Output-Message/new receiver-port datum)))
-                             (%call myeh 'enqueue-output msg))))
+                         (let ((msg (Output-Message/new receiver-port datum)))
+                           (%call myeh 'enqueue-output msg)))
                         
                         (t (error "internal error 1 in route-child-output")))))
                     (t nil))) ;; {from, port} doesn't match - pass
@@ -57,15 +54,12 @@
 			 (receiver-component (%call (%call connection 'receiver) 'component)))
 		     (cond 
 		      ((equal kind 'down)
-		       (let ()
-                         (let ()
-                           (let ((msg (Input-Message/new receiver-port datum)))
-                             (%call receiver-component 'enqueue-input msg)))))
+                       (let ((msg (Input-Message/new receiver-port datum)))
+                         (%call receiver-component 'enqueue-input msg)))
 		      
 		      ((equal kind 'through)
-		       (let ()
-			 (let ((msg (Output-Message/new receiver-port datum)))
-			   (%call myeh 'send msg))))
+                       (let ((msg (Output-Message/new receiver-port datum)))
+                         (%call myeh 'send msg)))
 		      
 		      (t (error "internal error 2 in route-downwards")))))
 		  (t nil))) ;; {Me, port} doesn't match - pass
