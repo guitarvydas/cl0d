@@ -42,9 +42,7 @@
                            (let ((msg (Output-Message/new receiver-port datum)))
                              (%call myeh 'enqueue-output msg))))
                         
-                        ((or (equal kind 'down) (equal kind 'through)) nil)
-                        
-                        (t (error "internal error 1 in route-inner-single-item")))))
+                        (t (error "internal error 1 in route-child-output")))))
                     (t nil))) ;; {from, port} doesn't match - pass
           connections)))
 
@@ -67,8 +65,6 @@
 			 (let ((msg (Output-Message/new receiver-port datum)))
 			   (%call myeh 'send msg))))
 		      
-		      ((or (equal kind 'up) (equal kind 'across)) nil)
-
 		      (t (error "internal error 2 in route-downwards")))))
 		  (t nil))) ;; {Me, port} doesn't match - pass
 	connections))
