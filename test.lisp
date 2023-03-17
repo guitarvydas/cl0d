@@ -164,3 +164,11 @@
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 
+(defun test-all ()
+  (seqtest0)
+  (seqtest1)
+  (seqtest2)
+  (partest2)
+  (wraptest0)
+  (values))
+
