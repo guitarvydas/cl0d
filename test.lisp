@@ -83,7 +83,6 @@
 			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout")))))
       (let ((seq (Sequential/new "sequential" children connections)))
         (%call seq 'handle (Input-Message/new "stdin" "Hello"))
-        (%call seq 'step-to-completion)
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 
@@ -104,7 +103,6 @@
           (let ((seq (Sequential/new "sequential" children connections)))
             (%call seq 'handle (Input-Message/new "stdin" "Hello"))
             (%call seq 'handle (Input-Message/new "stdin" "World"))
-            (%call seq 'step-to-completion)
             (apply (%lookup seq 'for-each-output) (list #'display-message))
             ;; ??? (%call seq 'for-each-output #'display-message)
             (values)))))
@@ -127,7 +125,6 @@
                         )))
       (let ((seq (Sequential/new "sequential" children connections)))
         (%call seq 'handle (Input-Message/new "stdin" "seqccHello"))
-        (%call seq 'step-to-completion)
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 
@@ -139,7 +136,6 @@
 			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout")))))
       (let ((ew (Container/new "sequential" children connections)))
         (%call ew 'handle (Input-Message/new "stdin" "Hello"))
-        (%call ew 'step-to-completion)
         (apply (%lookup ew 'for-each-output) (list #'display-message))
         (values)))))
 
@@ -165,7 +161,6 @@
       (let ((seq (Parallel/new "parallel" children connections)))
         (%call seq 'handle (Input-Message/new "stdin" "parccHello"))
         (%call seq 'handle (Input-Message/new "stdin" "parccWorld"))
-        (%call seq 'step-to-completion)
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 

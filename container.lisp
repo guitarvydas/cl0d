@@ -6,7 +6,10 @@
 	
 	(busy? . ,(lambda () (any-child-busy? children)))
 	(handle . ,(lambda (msg)
-		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)))
+		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)
+                     (loop while (any-child-busy? children)
+                           do (step-all-children eh children connections))))
+
 	
 	(step . ,(lambda ()
 		   (cond ((any-child-busy? children)
@@ -18,9 +21,8 @@
 				 $True)
 				(t $False))))))
 	
-	(step-to-completion . ,(lambda ()
-				 (loop while (any-child-busy? children)
-				       do (step-all-children eh children connections))))
+	(step-to-completion . ,(lambda () nil))
+
 	(%else . ,eh)))))
 
 (defun any-child-busy? (children)
