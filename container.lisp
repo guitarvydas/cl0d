@@ -29,16 +29,17 @@
     (mapc #'(lambda (connection)
               (cond ((%call connection 'sender-matches? from-sender)
                      (let ((kind (%call connection 'kind))
-                           (receiver (%call connection 'receiver)))
+                           (receiver-port (%call (%call connection 'receiver) 'port))
+                           (receiver-component (%call (%call connection 'receiver) 'component)))
                        (cond 
                         ((equal kind 'across)
-                         (let ((receiver-port (%call receiver 'port)))
-                           (let ((receiver-component (%call receiver 'component)))
+                         (let ()
+                           (let ()
                              (let ((msg (Input-Message/new receiver-port datum)))
                                (%call receiver-component 'enqueue-input msg)))))
                         
                         ((equal kind 'up)
-                         (let ((receiver-port (%call receiver 'port)))
+                         (let ()
                            (let ((msg (Output-Message/new receiver-port datum)))
                              (%call myeh 'enqueue-output msg))))
                         
@@ -52,16 +53,17 @@
   (mapc #'(lambda (connection)
 	    (cond ((%call connection 'sender-matches? (Sender/new $Me port))
 		   (let ((kind (%call connection 'kind))
-			 (receiver (%call connection 'receiver)))
+			 (receiver-port (%call (%call connection 'receiver) 'port))
+			 (receiver-component (%call (%call connection 'receiver) 'component)))
 		     (cond 
 		      ((equal kind 'down)
-		       (let ((receiver-port (%call receiver 'port)))
-                         (let ((receiver-component (%call receiver 'component)))
+		       (let ()
+                         (let ()
                            (let ((msg (Input-Message/new receiver-port datum)))
                              (%call receiver-component 'enqueue-input msg)))))
 		      
 		      ((equal kind 'through)
-		       (let ((receiver-port (%call connection 'receiver-port)))
+		       (let ()
 			 (let ((msg (Output-Message/new receiver-port datum)))
 			   (%call myeh 'send msg))))
 		      
