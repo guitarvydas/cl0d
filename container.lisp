@@ -11,11 +11,6 @@
                            do (run-all-children eh children connections))))
 
 	
-	(step . ,(lambda ()
-		   (cond ((any-child-busy? children)
-			  (run-all-children eh children connections)
-			  $True))))
-	
 	(%else . ,eh)))))
 
 (defun any-child-busy? (children)
