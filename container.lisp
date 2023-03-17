@@ -1,9 +1,9 @@
 (defun Container/new (given-name children connections)
   (let ((name (format nil "%a/Container" given-name)))
     (let ((eh (Eh/new name)))
-      `((enter . ,(lambda ()))
-	(exit . ,(lambda ()))
-	(reset . ,(lambda () (reset-children children)))
+      `(
+	
+	
 	(busy? . ,(lambda () (any-child-busy? children)))
 	(handle . ,(lambda (msg)
 		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)))
@@ -30,11 +30,6 @@
 	      (return-from any-child-busy? $True)))
 	children)
   $False)
-
-(defun reset-children (children)
-  (mapc #'(lambda (child)
-	    (%call child 'reset))
-        children))
 
 (defun step-all-children (myeh children connections)
   (mapc #'(lambda (child)

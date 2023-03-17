@@ -131,6 +131,18 @@
         (apply (%lookup seq 'for-each-output) (list #'display-message))
         (values)))))
 
+(defun wraptest0 ()
+  (let ((children (list (Echo-Wrapper/new "child 1"))))
+    (let ((connections (list
+			(Down/new (Sender/new $Me "stdin") (Sender/new (nth 0 children) "stdin"))
+			(Up/new (Sender/new (nth 0 children) "stderr") (Receiver/new $Me "stderr"))
+			(Up/new (Sender/new (nth 0 children) "stdout") (Receiver/new $Me "stdout")))))
+      (let ((ew (Container/new "sequential" children connections)))
+        (%call ew 'handle (Input-Message/new "stdin" "Hello"))
+        (%call ew 'step-to-completion)
+        (apply (%lookup ew 'for-each-output) (list #'display-message))
+        (values)))))
+
 (defun partest2 ()
   (let ((children (list
                    (Echo-Pipeline/new "container (child) 1")
