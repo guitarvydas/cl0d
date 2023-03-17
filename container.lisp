@@ -12,10 +12,10 @@
             (cond ((not (%call child 'empty-input?))
                    (let ((msg (%call child 'dequeue-input)))
                      (%call child 'handle msg)
-                     (route-and-clear-all-outputs-from-single-child child myeh connections)))))
+                     (route-and-clear-outputs-from-single-child child myeh connections)))))
         children))
 
-(defun route-and-clear-all-outputs-from-single-child (child myeh connections)
+(defun route-and-clear-outputs-from-single-child (child myeh connections)
   (mapc #'(lambda (msg) 
 	    (route-inner-single-datum child (%call msg 'port) (%call msg 'datum) myeh connections))
 	(%call child 'outputs-as-list))
