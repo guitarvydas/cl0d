@@ -2,6 +2,5 @@
   (let ((name (format nil "~a/Leaf" given-name)))
     (let ((eh (Eh/new name)))
       `((handle . ,(lambda (msg) (funcall f msg)))
-	(busy? . ,(lambda () nil))
 	(%else . ,eh)
 	))))

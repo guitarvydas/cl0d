@@ -4,22 +4,13 @@
       `(
 	
 	
-	(busy? . ,(lambda () (any-child-busy? children)))
 	(handle . ,(lambda (msg)
 		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)
-                     (loop while (any-child-busy? children)
-                           do (run-all-children eh children connections))))
+                     (run-all-children eh children connections)))
 
 	
 	(%else . ,eh)))))
 
-(defun any-child-busy? (children)
-  (mapc #'(lambda (child)
-	    (when (or (not (%call child 'empty-input?))
-                      (%call child 'busy?))
-	      (return-from any-child-busy? $True)))
-	children)
-  $False)
 
 (defun run-all-children (myeh children connections)
   (mapc #'(lambda (child)
