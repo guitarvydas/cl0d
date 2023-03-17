@@ -1,18 +1,13 @@
 (defun Container/new (given-name children connections)
   (let ((name (format nil "%a/Container" given-name)))
     (let ((eh (Eh/new name)))
-      `(
-	
-	
-	(handle . ,(lambda (msg)
+      `((handle . ,(lambda (msg)
 		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)
-                     (run-all-children eh children connections)))
-
-	
+                     (try-all-children eh children connections)))
 	(%else . ,eh)))))
 
 
-(defun run-all-children (myeh children connections)
+(defun try-all-children (myeh children connections)
   (mapc #'(lambda (child)
             (cond ((not (%call child 'empty-input?))
                    (let ((msg (%call child 'dequeue-input)))
