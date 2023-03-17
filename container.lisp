@@ -21,8 +21,6 @@
 				 $True)
 				(t $False))))))
 	
-	(step-to-completion . ,(lambda () nil))
-
 	(%else . ,eh)))))
 
 (defun any-child-busy? (children)
