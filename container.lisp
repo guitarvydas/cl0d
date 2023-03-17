@@ -17,12 +17,12 @@
 
 (defun route-and-clear-outputs-from-single-child (child myeh connections)
   (mapc #'(lambda (msg) 
-	    (route-inner-single-datum child (%call msg 'port) (%call msg 'datum) myeh connections))
+	    (route-child-output child (%call msg 'port) (%call msg 'datum) myeh connections))
 	(%call child 'outputs-as-list))
   (%call child 'clear-output))
         
 
-(defun route-inner-single-datum (from port datum myeh connections)
+(defun route-child-output (from port datum myeh connections)
   ;; Container routes one datum from a child to all receivers connected to the given {from,port} combination
   ;; handle across and up connections only - down and through do not apply here
   (let ((from-sender (Sender/new from port)))
