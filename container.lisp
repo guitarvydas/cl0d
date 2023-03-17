@@ -14,12 +14,7 @@
 	(step . ,(lambda ()
 		   (cond ((any-child-busy? children)
 			  (step-all-children eh children connections)
-			  $True)
-			 ((cond ((not (%call eh 'empty-input?))
-				 (let ((msg (%call eh 'dequeue-input)))
-				   (route-downwards (%call msg 'port) (%call msg 'datum) eh connections))
-				 $True)
-				(t $False))))))
+			  $True))))
 	
 	(%else . ,eh)))))
 
