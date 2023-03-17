@@ -18,6 +18,7 @@
 	  (ld "container.lisp")
           ;; test
 	  (ld "echo.lisp")
+	  (ld "echo-wrapper.lisp")
           (ld "sequential.lisp")
           (ld "parallel.lisp")
           (ld "echopipeline.lisp")
