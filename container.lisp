@@ -1,58 +1,67 @@
+(defun Container/new (given-name children connections)
+  (let ((name (format nil "%a/Container" given-name)))
+    (let ((eh (Eh/new name)))
+      `((handle . ,(lambda (msg)
+		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)
+                     (try-all-children eh children connections)))
+	(%else . ,eh)))))
 
-(defclass Container (EH)
-  ())
-  ;; ((default-name :accessor default-name :initform "default")
-  ;;  ...))
 
-(defmethod initialize-instance :after ((self EH))
-  (let ((defname "default"))
-    (setf (default-name self) defname)
-    (let ((handler (make-instance 'Port-Handler :port "*" 
-				  :func #'(lambda (msg) (handle self msg)))))
-      (setf (handler self) handler)
-      (let ((s (make-instance 'State :machine self :name defname :enter nil
-			      :handlers (list handler) :exit nil :child-machine nil)))
-	(setf (enter self) #'noop
-	      (exit self)  #'noop
-	      (states self) (list s))))))
-  
-
-(defmethod handle ((self Container) msg)
-  (mapc #'(lambda (connection)
-	    (guarded-deliver connection msg))
-	(connections self))
-  (run-to-completion self))
-
-(defmethod noop ((self Container))
-  )
-
-;; helpers
-(defmethod run-to-completion ((self Container))
-  (loop while (any-child-ready-p self)
-	do (mapc #'(lambda (child)
-		     (handle-if-ready child)
-		     (route-outputs self))
-		 (children self))))
-
-(defmethod any-child-ready-p ((self Container))
+(defun try-all-children (myeh children connections)
   (mapc #'(lambda (child)
-	    (when (is-ready-p child)
-	      (return-from any-child-ready-p t))))
-  nil)
+            (cond ((not (%call child 'empty-input?))
+                   (let ((msg (%call child 'dequeue-input)))
+                     (%call child 'handle msg)
+                     (route-and-clear-outputs-from-single-child child myeh connections)))))
+        children))
 
-(defmethod route-outputs ((self Container) child)
-  (let ((outputs (ouput-queue child)))
-    (clear-outputs child)
-    (mapc #'(lambda (msg)
-	      (mapc #'(lambda (conn)
-			(guarded-deliver conn msg))
-		    (connections self)))
-	  outputs)))
+(defun route-and-clear-outputs-from-single-child (child myeh connections)
+  (mapc #'(lambda (msg) 
+	    (route-child-output child (%call msg 'port) (%call msg 'datum) myeh connections))
+	(%call child 'outputs-as-list))
+  (%call child 'clear-output))
+        
 
-(defmethod inject ((self Container) port data)
-  (let ((m (make-instance 'Top-Message :from self :port port :data data)))
-    (inject-message self m)))
+(defun route-child-output (from port datum myeh connections)
+  ;; Container routes one datum from a child to all receivers connected to the given {from,port} combination
+  ;; handle across and up connections only - down and through do not apply here
+  (let ((from-sender (Sender/new from port)))
+    (mapc #'(lambda (connection)
+              (cond ((%call connection 'sender-matches? from-sender)
+                     (let ((kind (%call connection 'kind))
+                           (receiver-port (%call (%call connection 'receiver) 'port))
+                           (receiver-component (%call (%call connection 'receiver) 'component)))
+                       (cond 
+                        ((equal kind 'across)
+                         (let ((msg (Input-Message/new receiver-port datum)))
+                           (%call receiver-component 'enqueue-input msg)))
+                        
+                        ((equal kind 'up)
+                         (let ((msg (Output-Message/new receiver-port datum)))
+                           (%call myeh 'enqueue-output msg)))
+                        
+                        (t (error "internal error 1 in route-child-output")))))
+                    (t nil))) ;; {from, port} doesn't match - pass
+          connections)))
 
-(defmethod start ((self Container) port data)
-  (inject self port data)
-  (run self))
+(defun route-downwards (port datum myeh connections)
+  ;; Container routes its own input to its children and/or itself
+  ;; across and up do not apply here
+  (mapc #'(lambda (connection)
+	    (cond ((%call connection 'sender-matches? (Sender/new $Me port))
+		   (let ((kind (%call connection 'kind))
+			 (receiver-port (%call (%call connection 'receiver) 'port))
+			 (receiver-component (%call (%call connection 'receiver) 'component)))
+		     (cond 
+		      ((equal kind 'down)
+                       (let ((msg (Input-Message/new receiver-port datum)))
+                         (%call receiver-component 'enqueue-input msg)))
+		      
+		      ((equal kind 'through)
+                       (let ((msg (Output-Message/new receiver-port datum)))
+                         (%call myeh 'send msg)))
+		      
+		      (t (error "internal error 2 in route-downwards")))))
+		  (t nil))) ;; {Me, port} doesn't match - pass
+	connections))
+

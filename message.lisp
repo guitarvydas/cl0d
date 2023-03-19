@@ -1,18 +1,23 @@
-(defclass Base-Message (Debuggable)
-  ((data :accessor data :initarg :data)))
+(defun Message/new (v)
+  (let ((datum v))
+    `((datum . ,(lambda () datum)))))
 
-(defclass Message (Base-Message)
-  ((direction :accessor direction :initarg :direction)
-   (from :accessor from :initarg :from)
-   (port :accessor port :initarg :port)
-   (trail :accessor trail :initarg :trail)))
+;; InputMessage and OutputMessage are messages that hold onto the port tag
 
+;; InputMessage and OutputMessage have the same structure, but are semantically
+;;  different - the port of an InputMessage refers to a port of the receiver, whereas
+;;  the port of an OutputMessage refers to a port of the sender
+;; The router (in Container.lisp) remaps ports as appropriate.
 
-(defmethod print-object ((self Base-Message) strm)
-  (format strm "~a" (data self)))
+(defun Input-Message/new (port v)
+  `((port . ,(lambda () port))
+    (datum . ,(lambda () v))))
 
-(defmethod print-object ((self Message) strm)
-  (if (excrutiating-detail self)
-      (format strm "{~a: ~a, ~a, ~a->~a}" 
-	      (direction self) (port self) (data self) (trail self))
-    (format strm "{a}" (port self))))
+(defun Output-Message/new (port v)
+  `((port . ,(lambda () port))
+    (datum . ,(lambda () v))))
+
+(defun format-message (m)
+  (format nil "<~a: ~a>" (%call m 'port) (%call m 'datum)))
+
+        

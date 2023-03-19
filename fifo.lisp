@@ -1,21 +1,25 @@
-(defclass FIFO ()
-  ((elements :accessor elements :initform nil)))
-
-(defmethod enqueue ((self FIFO) v)
-  (push v (elements self)))
-
-(defmethod dequeue ((self FIFO))
-  (when (elements self)
-    (car (last (elements self)))))
-
-(defmethod len ((self FIFO))
-  (length (elements self)))
-
-(defmethod emptyp ((self FIFO))
-  (not (null (self elements))))
-
-(defmethod as-ordered-list ((self FIFO))
-  (elements self))
-
-(defmethod print-object ((self FIFO) strm)
-  (format strm "~a" (self elements)))
+(defun FIFO/new ()
+  (let ((queue nil))
+    (let ((enqueue (lambda (x) (push x queue)))
+	  (dequeue (lambda () (cond ((null queue) nil)
+				    (t (let ((r (car (last queue))))
+					 (setf queue (butlast queue))
+					 r)))))
+	  (push (lambda (x) (let ((m (list x)))
+			      ;; push x onto head of queue (jump the line)
+			      (cond ((null queue) (setf queue m))
+				    (t (setf queue (append queue m)))))))
+						      
+	  (clear (lambda () (setf queue nil)))
+	  (empty? (lambda () (null queue)))
+          (contents (lambda () queue))
+          )
+      (let ((namespace `(
+                         (enqueue . ,enqueue)
+                         (dequeue . ,dequeue)
+                         (push . ,push)
+                         (clear . ,clear)
+                         (empty? . ,empty?)
+                         (contents . ,contents)
+                         )))
+	namespace))))

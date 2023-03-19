@@ -1,17 +1,6 @@
-(defclass Leaf (EH)
-  ())
-
-(defmethod initialize-instance :after ((self EH))
-  (let ((defname "default"))
-    (setf (default-name self) defname)
-    (let ((handler (make-instance 'Port-Handler :port "*" 
-				  :func #'__handler__)))
-      (setf (handler self) handler)
-      (let ((s (make-instance 'State :machine self :name defname :enter nil
-			      :handlers (list handler) :exit nil 
-			      :child-machine nil)))
-	(setf (enter self) #'noop
-	      (exit self)  #'noop
-	      (states self) (list s))))))
-  
-
+(defun Leaf/new (given-name f)
+  (let ((name (format nil "~a/Leaf" given-name)))
+    (let ((eh (Eh/new name)))
+      `((handle . ,(lambda (msg) (funcall f msg)))
+	(%else . ,eh)
+	))))
