@@ -8,7 +8,6 @@
 	  (ld "lookup.lisp")
 	  (ld "fifo.lisp")
 	  (ld "message.lisp")
-	  (ld "schedulable.lisp")
 	  (ld "eh.lisp")
 	  ;; leaf
 	  (ld "leaf.lisp")
