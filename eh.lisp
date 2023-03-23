@@ -11,14 +11,17 @@
         (empty-input? . ,(lambda ()  (funcall (%lookup inq 'empty?))))
         
         ;; output queue
-        (send . ,(lambda (port datum) (funcall (%lookup outq 'enqueue) (Output-Message/new port datum))))
         (enqueue-output . ,(lambda (msg) (funcall (%lookup outq 'enqueue) msg)))
+        (dequeue-output . ,(lambda (msg) (funcall (%lookup outq 'dequeue) msg)))
         (empty-output? . ,(lambda () (funcall (%lookup outq 'empty?))))
-        (clear-output . ,(lambda () (funcall (%lookup outq 'clear))))
-        (outputs-as-list . ,(lambda () (funcall (%lookup outq 'contents))))
-        (for-each-output . ,(lambda (f) 
+        (clear-outputs . ,(lambda () (funcall (%lookup outq 'clear))))
+        (send . ,(lambda (port datum) (funcall (%lookup outq 'enqueue) (Output-Message/new port datum))))
+        (outputs . ,(lambda () (funcall (%lookup outq 'contents))))
+        (map-outputs . ,(lambda (f) 
                               (let ((output-list (funcall (%lookup outq 'contents))))
-                                (mapc f output-list))))))))
+                                (mapcar #'(lambda (m)
+                                          (funcall f m))
+                                      output-list))))))))
 
 (defun %type-of (x)
   (%call x '%type))

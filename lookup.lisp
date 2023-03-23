@@ -18,15 +18,8 @@
       (error (format nil "internal error % can't find ~a in ~a" key alist)))))
 
 (defun %call (alist key &rest args)
-  ;(format *error-output* "%call ~a ~a~%" key (format-args args))
   (apply (%lookup alist key) args))
 
 (defun %delegate (alist key &rest args) ;; same as %call - this should probably be a macro
-  ;(format *error-output* "%delegate ~a ~a~%" key (format-args args))
   (apply (%lookup alist key) args))
 
-(defun format-args (args)
-  (mapcar #'(lambda (arg)
-              (mapcar #'(lambda (pair) (car pair)) arg))
-          args))
-              

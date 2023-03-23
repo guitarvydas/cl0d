@@ -18,6 +18,6 @@
     (datum . ,(lambda () v))))
 
 (defun format-message (m)
-  (format nil "<~a: ~a>" (%call m 'port) (%call m 'datum)))
+  (format nil "<~a: ~a>" (funcall (%lookup m 'port)) (funcall (%lookup m 'datum))))
 
         
