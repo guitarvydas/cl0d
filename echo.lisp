@@ -3,7 +3,7 @@
 (defun Echo/new (given-name)
   (let ((f nil))
     (let ((indirect-f (lambda (msg) (apply f (list msg)))))
-      (let ((name (format nil "~a/Echo" given-name)))
+      (let ((name (format nil "[Echo ~a]" given-name)))
 	(let ((leaf (Leaf/new name indirect-f)))
           (setf f (lambda (msg)
                     ;(format *error-output* "Echo handle ~a~%" (format-message msg))

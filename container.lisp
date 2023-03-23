@@ -1,5 +1,5 @@
 (defun Container/new (given-name children connections)
-  (let ((name (format nil "%a/Container" given-name)))
+  (let ((name (format nil "[Container %a]" given-name)))
     (let ((eh (Eh/new name)))
       `((handle . ,(lambda (msg)
 		     (route-downwards (%call msg 'port) (%call msg 'datum) eh connections)

@@ -1,5 +1,5 @@
 (defun Leaf/new (given-name f)
-  (let ((name (format nil "~a/Leaf" given-name)))
+  (let ((name (format nil "[Leaf ~a]" given-name)))
     (let ((eh (Eh/new name)))
       `((handle . ,(lambda (msg) (funcall f msg)))
 	(%else . ,eh)

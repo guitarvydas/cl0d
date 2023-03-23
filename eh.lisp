@@ -1,5 +1,5 @@
 (defun Eh/new (given-name)
-  (let ((name (format nil "~a/Eh" given-name)))
+  (let ((name (format nil "[Eh ~a]" given-name)))
     (let ((inq (FIFO/new))
           (outq (FIFO/new)))
       `((name . ,(lambda () name))
