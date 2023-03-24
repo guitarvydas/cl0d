@@ -1,4 +1,5 @@
 (defun fixup (self)
+(format *error-output* "fixup ~a~%" self)
   (cond ((null self) nil)
         ((eq '$Me self) self)
         ((not (listp self)) self)
