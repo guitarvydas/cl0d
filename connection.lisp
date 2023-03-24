@@ -34,10 +34,10 @@
 ;; exported constructors for connectors of different kinds
 
 (defun Down/new (sender receiver)
-  (cons `(kind . ,(lambda () 'down)) (Connector/new sender receiver)))
+  (append `((kind . ,(lambda () 'down))) (Connector/new sender receiver)))
 (defun Up/new (sender receiver)
-  (cons `(kind . ,(lambda () 'up)) (Connector/new sender receiver)))
+  (append `((kind . ,(lambda () 'up))) (Connector/new sender receiver)))
 (defun Across/new (sender receiver)
-  (cons `(kind . ,(lambda () 'across)) (Connector/new sender receiver)))
+  (append `((kind . ,(lambda () 'across))) (Connector/new sender receiver)))
 (defun Through/new (sender receiver)
-  (cons `(kind . ,(lambda () 'through)) (Connector/new sender receiver)))
+  (append `((kind . ,(lambda () 'through))) (Connector/new sender receiver)))
