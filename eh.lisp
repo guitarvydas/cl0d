@@ -2,8 +2,8 @@
   (let ((name (format nil "[Eh ~a]" given-name)))
     (let ((inq (FIFO/new))
           (outq (FIFO/new)))
-      `((name . ,(lambda () name))
-	(append-name . ,(lambda (s) (setf name (format nil "~a/~a" name s))))
+      `((%tag . eh)
+        (name . ,(lambda () name))
         (%type . ,(lambda () nil))
         ;; input queue
         (enqueue-input . ,(lambda (x) (funcall (%lookup inq 'enqueue) x)))
