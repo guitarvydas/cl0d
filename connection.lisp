@@ -10,14 +10,13 @@
     (port . ,(lambda () port))
     (%type . ,(lambda () 'Receiver))))
 
-
 (defun sender-matches? (sender other)
   (cond ((eq 'Sender (%type-of other))
 	 (let ((other-component (%call other 'component))
 	       (other-port (%call other 'port))
 	       (my-component (%call sender 'component))
 	       (my-port (%call sender 'port)))
-	   (cond ((and (equal other-component my-component)
+	   (cond ((and (eq other-component my-component)
 		       (equal other-port my-port))
 		  $True)
 		 (t
@@ -62,3 +61,4 @@
 			  (%call (%call receiver 'component) 'enqueue-output 
 				 (Output-Message/new (%call receiver 'port) datum)))))
 	  (Connector/new sender receiver)))
+
