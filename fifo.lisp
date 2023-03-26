@@ -14,7 +14,7 @@
 	  (empty? (lambda () (null queue)))
           (contents (lambda () queue))
           )
-      (let ((namespace `(
+      (let ((namespace `((%debug . fifo)
                          (enqueue . ,enqueue)
                          (dequeue . ,dequeue)
                          (push . ,push)
