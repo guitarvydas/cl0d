@@ -1,0 +1,57 @@
+(defun Container/new (given-name children connections)
+  (let ((name (format nil "[Container ~a]" given-name)))
+    (let ((eh (Eh/new name)))
+      `((%debug . Container)
+        (handle . ,(λ (msg)
+		     (route-downwards eh msg.port msg.datum connections)
+                     (dispatch-until-quiescence children connections)))
+	(%else . ,eh)))))
+
+(defun dispatch-until-quiescence (children connections)
+  (cond ((any-child-ready? children) 
+         (dispatch-all-children-once children connections)
+         (dispatch-until-quiescence children connections))
+        (t nil)))
+
+(defun dispatch-all-children-once (children connections)
+  (mapc #'(λ (child)
+            (cond ((ready? child)
+                   (let ((msg (pull-input child)))
+                     (handle-input child msg)
+                     (route-and-clear-outputs-from-single-child child connections)))
+                  (t nil)))
+        children))
+
+(defun pull-input (e)
+  e.dequeue-input)
+
+(defun handle-input (child msg)
+  child.handle {msg})
+
+(defun route-and-clear-outputs-from-single-child (child connections)
+  (mapc #'(λ (output)
+            (route-child-output child output.port output.datum connections))
+        child.outputs)
+  child.clear-outputs)
+
+(defun route-child-output (child port datum connections)
+  (route child port datum connections))
+
+(defun route-downwards (self port datum connections)
+  (route self port datum connections))
+
+(defun route (from port datum connections)
+  (let ((from-sender (Sender/new from port)))
+    (mapc #'(λ (conn)
+              (cond ((conn.sender-matches? from-sender)
+                     (conn.deposit datum))
+                    (t nil)))
+          connections)))
+
+(defun ready? (child)
+  (let ((empty-inputs child.empty-input?)
+        (empty-outputs child.empty-output?))
+    (or (not empty-inputs) (not empty-outputs))))
+
+(defun any-child-ready? (children)
+  (some #'ready? children))

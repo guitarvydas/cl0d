@@ -11,6 +11,7 @@
         (empty-input? . ,(lambda ()  (funcall (%lookup inq 'empty?))))
         
         ;; output queue
+	(output-queue . ,(lambda () outq))
         (enqueue-output . ,(lambda (msg) (funcall (%lookup outq 'enqueue) msg)))
         (dequeue-output . ,(lambda (msg) (funcall (%lookup outq 'dequeue) msg)))
         (empty-output? . ,(lambda () (funcall (%lookup outq 'empty?))))

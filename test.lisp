@@ -18,16 +18,11 @@
 
 (defun WrappedEcho/new (given-name)
   (let ((children (list (Echo/new "0"))))
-    (let ((self (Container/new (format nil "[WrappedEcho ~a]" given-name)
-                               children
-                               nil
-                               )))
-      (let ((connection-list (list (Down/new (Sender/new self "stdin") (Receiver/new (nth 0 children) "stdin"))
-                                   (Up/new   (Sender/new (nth 0 children) "stdout") (Sender/new self "stdout")))))
-        (fixup-connections self connection-list)
-        self))))
-
-(defun fixup-connections (self connections)
-  (setf (cdr (assoc 'connections self)) connections))
+    (let ((eh (Container/new-begin (format nil "[WrappedEcho ~a]" given-name))))
+      (let ((outq (%call eh 'output-queue)))
+	(Container/new-finalize eh
+				children
+				(list (Down/new (Sender/new nil "stdin") (Receiver/new (nth 0 children) "stdin"))
+                                      (Up/new   (Sender/new (nth 0 children) "stdout") (Receiver/new outq "stdout"))))))))
 
       
