@@ -1,14 +1,14 @@
 (defun Container/new-begin (given-name)
   (let ((name (format nil "[Container ~a]" given-name)))
-    (eh (Eh/new name))))
+    (Eh/new name)))
 
 (defun Container/new-finalize (eh children connections)
   `((%debug . Container)
     (handle . ,(lambda (msg)
-		 (route-downwards eh (%call msg 'port) (%call msg 'datum) connections)
+		 (route-downwards (%call msg 'port) (%call msg 'datum) connections)
 		 (loop while (any-child-ready? children)
-		       do (dispatch-all-children children connections)))
-	    (%else . ,eh))))
+		       do (dispatch-all-children children connections))))
+    (%else . ,eh)))
 
 (defun dispatch-all-children (children connections)
   (mapc #'(lambda (child)

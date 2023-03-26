@@ -6,7 +6,7 @@
 (defun Sender/new (component port)
   (let ((token (gen-unique-token component port)))
     `((token . ,(lambda () token))
-      (%type . ,(lambda () 'Sender))))
+      (%type . ,(lambda () 'Sender)))))
 
 (defun Receiver/new (queue port)
   `((queue . ,(lambda () queue))
@@ -15,10 +15,10 @@
 
 (defun sender-matches? (sender other)
   (cond ((eq 'Sender (%type-of other))
-	 (let ((other-token (%call other 'token)
-	       (my-token (%call sender 'token))))
+	 (let ((other-token (%call other 'token))
+	       (my-token (%call sender 'token)))
 	   (eq my-token other-token)))
-	(t $False)
+	(t $False)))
 	   
 ;; not meant to be exported - Connector/new is meant to be private to the constructors
 ;; herein...
