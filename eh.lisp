@@ -2,7 +2,7 @@
   (let ((name (format nil "[Eh ~a]" given-name)))
     (let ((inq (FIFO/new))
           (outq (FIFO/new)))
-      `((%tag . eh)
+      `((%debug . eh)
         (name . ,(lambda () name))
         (%type . ,(lambda () nil))
         ;; input queue

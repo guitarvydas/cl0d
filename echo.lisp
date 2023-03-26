@@ -9,7 +9,7 @@
                     ;(format *error-output* "Echo handle ~a~%" (format-message msg))
                     (apply (%lookup leaf 'send) (list "stdout" (apply (%lookup msg 'datum) nil)))
                     ))
-          `((%tag . Echo)
+          `((%debug . Echo)
             (func . ,f)
             (%else . ,leaf)))))))
 

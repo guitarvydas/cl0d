@@ -1,7 +1,7 @@
 (defun Container/new (given-name children connections)
   (let ((name (format nil "[Container ~a]" given-name)))
     (let ((eh (Eh/new name)))
-      `((%tag . Container)
+      `((%debug . Container)
         (handle . ,(lambda (msg)
 		     (route-downwards eh (%call msg 'port) (%call msg 'datum) connections)
                      (dispatch-until-quiescence children connections)))
