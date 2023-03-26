@@ -6,6 +6,7 @@
         (name . ,(lambda () name))
         (%type . ,(lambda () nil))
         ;; input queue
+	(input-queue . ,(lambda () inq))
         (enqueue-input . ,(lambda (x) (funcall (%lookup inq 'enqueue) x)))
         (dequeue-input . ,(lambda () (funcall (%lookup inq 'dequeue))))
         (empty-input? . ,(lambda ()  (funcall (%lookup inq 'empty?))))

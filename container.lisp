@@ -49,7 +49,7 @@
   $False)
 
 (defun ready? (child)
-  (let ((input-empty? (%call child 'input-empty?))
-	(output-empty? (%call child 'output-empty?)))
+  (let ((input-empty? (%call child 'empty-input?))
+	(output-empty? (%call child 'empty-output?)))
     (or (not input-empty?) (not output-empty?))))
 

@@ -22,7 +22,7 @@
       (let ((outq (%call eh 'output-queue)))
 	(Container/new-finalize eh
 				children
-				(list (Down/new (Sender/new nil "stdin") (Receiver/new (nth 0 children) "stdin"))
+				(list (Down/new (Sender/new nil "stdin") (Receiver/new (%call (nth 0 children) 'input-queue) "stdin"))
                                       (Up/new   (Sender/new (nth 0 children) "stdout") (Receiver/new outq "stdout"))))))))
 
       
