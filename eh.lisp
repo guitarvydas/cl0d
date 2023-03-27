@@ -10,7 +10,6 @@
         (enqueue-input . ,(lambda (x) (funcall (%lookup inq 'enqueue) x)))
         (dequeue-input . ,(lambda () (funcall (%lookup inq 'dequeue))))
         (empty-input? . ,(lambda ()  (funcall (%lookup inq 'empty?))))
-        
         ;; output queue
 	(output-queue . ,(lambda () outq))
         (enqueue-output . ,(lambda (msg) (funcall (%lookup outq 'enqueue) msg)))
@@ -23,7 +22,15 @@
                               (let ((output-list (funcall (%lookup outq 'contents))))
                                 (mapcar #'(lambda (m)
                                           (funcall f m))
-                                      output-list))))))))
+                                      output-list))))
+
+        ;; debuggery
+        (finputs . ,(lambda () (let ((ins (funcall (%lookup inq 'contents))))
+                                 (mapcar #'(lambda (m) (format-message m)) ins))))
+        (foutputs . ,(lambda () (let ((ins (funcall (%lookup outq 'contents))))
+                                 (mapcar #'(lambda (m) (format-message m)) ins))))
+        
+        ))))
 
 (defun %type-of (x)
   (%call x '%type))

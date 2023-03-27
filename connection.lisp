@@ -32,8 +32,10 @@
 ;; exported constructors for connectors of different kinds
 
 (defun Down/new (sender receiver)
-  (append `((kind . ,(lambda () 'down))
+  (append `((%debug . down)
+            (kind . ,(lambda () 'down))
 	    (deposit . ,(lambda (datum) 
+                          (format *error-output* "Down~%")
 			  (%call (%call receiver 'queue) 'enqueue
 				 (Input-Message/new (%call receiver 'port) datum)))))
 	  (Connector/new sender receiver)))
@@ -41,6 +43,7 @@
 (defun Up/new (sender receiver)
   (append `((kind . ,(lambda () 'up))
 	    (deposit . ,(lambda (datum) 
+                          (format *error-output* "Up~%")
 			  (%call (%call receiver 'queue) 'enqueue
 				 (Output-Message/new (%call receiver 'port) datum)))))
 	  (Connector/new sender receiver)))
@@ -48,6 +51,7 @@
 (defun Across/new (sender receiver)
   (append `((kind . ,(lambda () 'across))
 	    (deposit . ,(lambda (datum) 
+                          (format *error-output* "Across~%")
 			  (%call (%call receiver 'queue) 'enqueue
 				 (Input-Message/new (%call receiver 'port) datum)))))
 	  (Connector/new sender receiver)))
@@ -55,6 +59,7 @@
 (defun Through/new (sender receiver)
   (append `((kind . ,(lambda () 'through))
 	    (deposit . ,(lambda (datum) 
+                          (format *error-output* "Through~%")
 			  (%call (%call receiver 'queue) 'enqueue
 				 (Output-Message/new (%call receiver 'port) datum)))))
 	  (Connector/new sender receiver)))
