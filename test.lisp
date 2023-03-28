@@ -11,6 +11,7 @@
     (%call hw 'handle (Input-Message/new "stdin" "Hello"))
     (format *standard-output* "~a~%" (%call hw 'map-outputs 'format-message)))
 
+  (format *standard-output* "~%---~%")
   (let ((hw (WrappedEcho2/new "wwhw")))
     (format *standard-output* "*** ~a~%" (%call hw 'name))
     (%call hw 'handle (Input-Message/new "stdin" "Hello"))
