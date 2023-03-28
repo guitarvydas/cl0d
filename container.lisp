@@ -13,9 +13,7 @@
 (defun dispatch-all-children (children connections)
   (mapc #'(lambda (child)
 	    (cond ((has-inputs? child)
-                   (format *error-output* "begin dispatch has inputs ~a ~a~%" (%call child 'name) (%call child 'finputs))
                    (let ((msg (%call child 'dequeue-input)))
-                     (format *error-output* "dispatch after dequeue inputs ~a ~a~%" (%call child 'name) (%call child 'finputs))
                      (%call child 'handle msg))
                    (route-and-clear-outputs-from-single-child child connections))
 		  (t nil)))
@@ -23,12 +21,10 @@
 
 
 (defun route-and-clear-outputs-from-single-child (child connections)
-  (format *error-output* "begin racofsc ~a~%" (%call child 'foutputs))
   (mapc #'(lambda (output)
 	    (route-child-output child (%call output 'port) (%call output 'datum) connections))
 	(%call child 'outputs))
-  (%call child 'clear-outputs)
-  (format *error-output* "finish racofsc ~a~%" (%call child 'foutputs)))
+  (%call child 'clear-outputs))
   
 (defun route-child-output (child port datum connections)
   (route child port datum connections))
