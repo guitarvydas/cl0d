@@ -1,11 +1,18 @@
 ;; exported low-level constructors
 
 (defun gen-unique-token (component port)
-  (sxhash (list component port)))
+  (let ((token (sxhash (list component port))))
+    (format *error-output* "gen unique token ~a = ~a ~a~%"  token (and component (%call component 'name)) port)
+    token))
 
 (defun Sender/new (component port)
   (let ((token (gen-unique-token component port)))
     `((token . ,(lambda () token))
+      ;; bootstrap debugging
+      (%component . ,component)
+      (%port . ,port)
+      (%token . ,token)
+      ;; end bootstrap debugging
       (%type . ,(lambda () 'Sender)))))
 
 (defun Receiver/new (queue port)
@@ -17,6 +24,20 @@
   (cond ((eq 'Sender (%type-of other))
 	 (let ((other-token (%call other 'token))
 	       (my-token (%call sender 'token)))
+         ;; debug bootstrap
+         (when (eq my-token other-token)
+           (let ((sname (and (%lookup sender '%component) (%call (%lookup sender '%component) 'name)))
+                 (oname (and (%lookup other '%component) (%call (%lookup other '%component) 'name))))
+             (when (not (equal sname oname))
+               (format *error-output* "~a ~a ~a~%" (%lookup sender '%token) sname (%lookup sender '%port))
+               (format *error-output* "~a ~a ~a~%" (%lookup other '%token) oname (%lookup other '%port))
+               (throw 'sender-matches-error-1 (values)))
+             (when (not (equal (%lookup sender '%port) (%lookup other '%port)))
+               (format *error-output* "~a ~a ~a~%" (%lookup sender '%token) sname (%lookup sender '%port))
+               (format *error-output* "~a ~a ~a~%" (%lookup other '%token) oname (%lookup other '%port))
+               (throw 'sender-matches-error-2 (values)))
+             ))
+         ;; end debug bootstrap
 	   (eq my-token other-token)))
 	(t $False)))
 	   
