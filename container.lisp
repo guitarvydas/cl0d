@@ -12,10 +12,10 @@
 
 (defun dispatch-all-children (children connections)
   (mapc #'(lambda (child)
-	    (cond ((ready? child)
-		   (let ((msg (%call child 'dequeue-input)))
-		     (%call child 'handle msg))
-		   (route-and-clear-outputs-from-single-child child connections))
+	    (cond ((has-inputs? child)
+                   (let ((msg (%call child 'dequeue-input)))
+                     (%call child 'handle msg))
+                   (route-and-clear-outputs-from-single-child child connections))
 		  (t nil)))
 	children))
 
@@ -52,4 +52,8 @@
   (let ((input-empty? (%call child 'empty-input?))
 	(output-empty? (%call child 'empty-output?)))
     (or (not input-empty?) (not output-empty?))))
+
+(defun has-inputs? (child)
+  (let ((input-empty? (%call child 'empty-input?)))
+    (not input-empty?)))
 

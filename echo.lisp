@@ -6,7 +6,6 @@
       (let ((name (format nil "[Echo ~a]" given-name)))
 	(let ((leaf (Leaf/new name indirect-f)))
           (setf f (lambda (msg)
-                    ;(format *error-output* "Echo handle ~a~%" (format-message msg))
                     (apply (%lookup leaf 'send) (list "stdout" (apply (%lookup msg 'datum) nil)))
                     ))
           `((%debug . Echo)

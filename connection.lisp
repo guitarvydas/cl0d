@@ -1,11 +1,18 @@
 ;; exported low-level constructors
 
 (defun gen-unique-token (component port)
-  (sxhash (list component port)))
+  (let ((id (and component (%lookup component '%id))))
+    (let ((token (sxhash (list id port))))
+      token)))
 
 (defun Sender/new (component port)
   (let ((token (gen-unique-token component port)))
     `((token . ,(lambda () token))
+      ;; bootstrap debugging
+      (%component . ,component)
+      (%port . ,port)
+      (%token . ,token)
+      ;; end bootstrap debugging
       (%type . ,(lambda () 'Sender)))))
 
 (defun Receiver/new (queue port)
@@ -32,7 +39,8 @@
 ;; exported constructors for connectors of different kinds
 
 (defun Down/new (sender receiver)
-  (append `((kind . ,(lambda () 'down))
+  (append `((%debug . down)
+            (kind . ,(lambda () 'down))
 	    (deposit . ,(lambda (datum) 
 			  (%call (%call receiver 'queue) 'enqueue
 				 (Input-Message/new (%call receiver 'port) datum)))))
