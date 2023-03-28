@@ -37,6 +37,13 @@
     (%call hw 'handle (Input-Message/new "stdin" "Hello"))
     (format *standard-output* "~a~%" (%call hw 'map-outputs 'format-message)))
 
+  (format *standard-output* "~%---~%")
+  (let ((hw (ParWrappedEcho/new "pwhw")))
+    (format *standard-output* "*** ~a~%" (%call hw 'name))
+    (%call hw 'handle (Input-Message/new "stdin" "Hello"))
+    (%call hw 'handle (Input-Message/new "stdin" "World"))
+    (format *standard-output* "~a~%" (%call hw 'map-outputs 'format-message)))
+
   (values))
 
 
