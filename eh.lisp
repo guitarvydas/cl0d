@@ -3,6 +3,7 @@
     (let ((inq (FIFO/new))
           (outq (FIFO/new)))
       `((%debug . eh)
+        (%id . ,(gensym "id"))
         (name . ,(lambda () name))
         (%type . ,(lambda () nil))
         ;; input queue
