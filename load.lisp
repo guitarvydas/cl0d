@@ -8,7 +8,6 @@
 	  (ld "lookup.lisp")
 	  (ld "fifo.lisp")
 	  (ld "message.lisp")
-	  (ld "schedulable.lisp")
 	  (ld "eh.lisp")
 	  ;; leaf
 	  (ld "leaf.lisp")
@@ -18,9 +17,5 @@
 	  (ld "container.lisp")
           ;; test
 	  (ld "echo.lisp")
-	  (ld "echo-wrapper.lisp")
-          (ld "sequential.lisp")
-          (ld "parallel.lisp")
-          (ld "echopipeline.lisp")
           (ld "test.lisp")
 ))
