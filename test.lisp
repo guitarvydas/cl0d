@@ -48,6 +48,7 @@
   (let ((fback (Feedback-test/new "feedback")))
     (format *standard-output* "*** ~a~%" (%call fback 'name))
     (%call fback 'handle (Input-Message/new "stdin" t))
+    (format *error-output* "outputs ~a~%" (%call fback 'foutputs))
     (format *standard-output* "~a~%" (%call fback 'map-outputs 'format-message)))
 
   (values))
@@ -118,8 +119,11 @@
       `((%debug . A)
         (handle . ,(lambda (msg)
                      (declare (ignore msg))
-                     (%call leaf 'send (list "stdout" "v"))
-                     (%call leaf 'send (list "stdout" "w"))))
+                     (%call leaf 'send "stdout" "v")
+                     (format *error-output* "outputs ~a~%" (%call leaf 'foutputs))
+                     (%call leaf 'send "stdout" "w")
+                     (format *error-output* "outputs ~a~%" (%call leaf 'foutputs))
+                     ))
         (%else . ,leaf)))))
 
 (defun B/new (given-name)
@@ -129,10 +133,10 @@
         (handle . ,(lambda (msg)
                      (cond 
                       ((equal "stdin" (%call msg 'port))
-                       (%call leaf 'send (list "stdout" (%call msg 'datum)))
-                       (%call leaf 'send (list "feedback" "z")))
+                       (%call leaf 'send "stdout" (%call msg 'datum))
+                       (%call leaf 'send "feedback" "z"))
                       ((equal "fback" (%call msg 'port))
-                       (%call leaf 'send (list "stdout" (%call msg 'datum))))
+                       (%call leaf 'send "stdout" (%call msg 'datum)))
                       (t nil))))
         (%else . ,leaf)))))
 
@@ -145,7 +149,7 @@
          eh
          children
          (list (Down/new (Sender/new nil "stdin") (Receiver/new (%call (nth 0 children) 'input-queue) "stdin"))
-               (Across/new   (Sender/new (nth 0 children) "stdout") (Receiver/new (%call (nth 1 children) 'input-queue) "stdin")
-               (Across/new   (Sender/new (nth 1 children) "feedback") (Receiver/new (%call (nth 1 children) 'input-queue) "fback")
+               (Across/new   (Sender/new (nth 0 children) "stdout") (Receiver/new (%call (nth 1 children) 'input-queue) "stdin"))
+               (Across/new   (Sender/new (nth 1 children) "feedback") (Receiver/new (%call (nth 1 children) 'input-queue) "fback"))
                (Up/new   (Sender/new (nth 1 children) "stdout") (Receiver/new outq "stdout"))
-               ))))))))
+               ))))))

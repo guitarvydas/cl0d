@@ -12,7 +12,7 @@
 						      
 	  (clear (lambda () (setf queue nil)))
 	  (empty? (lambda () (null queue)))
-          (contents (lambda () queue))
+          (as-list (lambda () (reverse queue)))
           )
       (let ((namespace `((%debug . fifo)
                          (enqueue . ,enqueue)
@@ -20,6 +20,6 @@
                          (push . ,push)
                          (clear . ,clear)
                          (empty? . ,empty?)
-                         (contents . ,contents)
+                         (as-list . ,as-list)
                          )))
 	namespace))))

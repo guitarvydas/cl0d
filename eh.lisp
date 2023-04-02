@@ -18,17 +18,17 @@
         (empty-output? . ,(lambda () (funcall (%lookup outq 'empty?))))
         (clear-outputs . ,(lambda () (funcall (%lookup outq 'clear))))
         (send . ,(lambda (port datum) (funcall (%lookup outq 'enqueue) (Output-Message/new port datum))))
-        (outputs . ,(lambda () (funcall (%lookup outq 'contents))))
+        (outputs . ,(lambda () (funcall (%lookup outq 'as-list))))
         (map-outputs . ,(lambda (f) 
-                              (let ((output-list (funcall (%lookup outq 'contents))))
+                              (let ((output-list (funcall (%lookup outq 'as-list))))
                                 (mapcar #'(lambda (m)
                                           (funcall f m))
                                       output-list))))
 
         ;; debuggery
-        (finputs . ,(lambda () (let ((ins (funcall (%lookup inq 'contents))))
+        (finputs . ,(lambda () (let ((ins (funcall (%lookup inq 'as-list))))
                                  (mapcar #'(lambda (m) (format-message m)) ins))))
-        (foutputs . ,(lambda () (let ((ins (funcall (%lookup outq 'contents))))
+        (foutputs . ,(lambda () (let ((ins (funcall (%lookup outq 'as-list))))
                                  (mapcar #'(lambda (m) (format-message m)) ins))))
         ;; ideally, these debug methods are not needed, or, should be made to be alist methods in the above alist, but,
         ;; I'm straddling two worlds - sync vs. async, so I am forced to use sync debug methods while bootstrapping
