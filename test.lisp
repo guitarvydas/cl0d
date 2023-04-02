@@ -48,7 +48,6 @@
   (let ((fback (Feedback-test/new "feedback")))
     (format *standard-output* "*** ~a~%" (%call fback 'name))
     (%call fback 'handle (Input-Message/new "stdin" t))
-    (format *error-output* "outputs ~a~%" (%call fback 'foutputs))
     (format *standard-output* "~a~%" (%call fback 'map-outputs 'format-message)))
 
   (values))
@@ -120,9 +119,7 @@
         (handle . ,(lambda (msg)
                      (declare (ignore msg))
                      (%call leaf 'send "stdout" "v")
-                     (format *error-output* "outputs ~a~%" (%call leaf 'foutputs))
                      (%call leaf 'send "stdout" "w")
-                     (format *error-output* "outputs ~a~%" (%call leaf 'foutputs))
                      ))
         (%else . ,leaf)))))
 
